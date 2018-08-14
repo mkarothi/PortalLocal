@@ -27,22 +27,12 @@ foreach($searchTablesArray as $tableName) { ?>
         <table >
             <tr>
                 <td><?php 
-            echo $this->Form->create("Reports", array("method" => "POST", "action" => "/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
-            if(in_array($reportType, array("bulkframe"))){
-                echo $this->Form->hidden('framename', array("value" => $framename));
-                echo $this->Form->hidden('bulkdeviceid', array("value" => $searchString)); 
-            }elseif(in_array($reportType, array("frame"))){
-                echo $this->Form->hidden('framename', array("value" => $framename));
-                echo $this->Form->hidden('deviceid', array("value" => $searchString)); 
-            }elseif(in_array($reportType, array("bulktqhost", "tqhost"))){
-                echo $this->Form->hidden('tqhost', array("value" => $searchString));
-            }elseif(in_array($reportType, array("bulkwwn", "wwn"))){
-                echo $this->Form->hidden('wwn', array("value" => $searchString));
-            }
-            echo $this->Form->hidden('export', array("value" => "export")); 
-            echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
-            echo $this->Form->end() ;
-        ?></td>
+                    echo $this->Form->create("Reports", array("method" => "POST", "url" => "/reports/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
+                    echo $this->Form->hidden('export', array("value" => "export")); 
+                    echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
+                    echo $this->Form->end() ;
+                ?>
+                </td>
             <td style="text-align: center;"><h2><?php echo strtoupper($tableName) ?> search results:</h2></td>
             </tr>
         </table>
@@ -60,7 +50,7 @@ foreach($searchTablesArray as $tableName) { ?>
                         <th><?php echo ($fieldNames); ?></th>   
                     <?php } ?>
                 <?php } ?>
-                <?php foreach($results[$tableName][0][0] as $fieldNames => $values){ ?> 
+                <?php foreach($results[$tableName][0][$tableName] as $fieldNames => $values){ ?> 
 				<?php if($fieldNames == "Location"){ ?>
 						<th style="width:100px;"><?php echo ($fieldNames); ?> </th>
 						<?php }else{ ?>
@@ -68,12 +58,12 @@ foreach($searchTablesArray as $tableName) { ?>
 						<?php } ?>
 				<?php } ?>
             </tr>
-            <?php foreach($results[$tableName] as $result){ ?>
+            <?php foreach($results[$tableName] as $result){ // debug($result);?>
                 <tr>
                     <?php foreach($result[$tableName] as $values){ ?>
 	                    	<td><?php echo ($values); ?></td>
                     <?php } ?>
-                    <?php foreach($result[0] as $values){ ?>
+                    <?php foreach($result[$tableName] as $values){ ?>
 	                    	<td><?php echo ($values); ?></td>
                     <?php } ?>
                 </tr>

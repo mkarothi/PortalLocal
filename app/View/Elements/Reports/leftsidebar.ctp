@@ -234,6 +234,28 @@
 			<li>
                 <a href="/reports/pingnslookup/" <?php if(isset($this->request->action) && $this->request->action == "pingnslookup") {?>class = "sidebar-selected" <?php } ?> >DNS Lookup & Ping Check</a>
             </li>
+            <li>
+                <a href="/reports/tqos/tqexception" <?php if(isset($this->request->params['pass'][0]) && $this->request->params['pass'][0] == "tqos") {?>class = "sidebar-selected" <?php } ?> >TQ OS Exeception</a>
+            </li>
+			<li>
+                <a href="/reports/tqvmware/tqexception" <?php if(isset($this->request->action) && $this->request->action == "tqexception") {?>class = "sidebar-selected" <?php } ?> >TQ Vmware Exception</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<?php } ?>
+
+<?php if($this->request->params['action'] == 'tqexception'){?>
+<div id="left_side">
+    <h3>Search Reports</h3>
+    <div class="gadget">
+        <ul class="sb_menu">
+            <li>
+                <a href="/reports/tqos/tqexception" <?php if(isset($this->request->params['pass'][0]) && $this->request->params['pass'][0] == "tqos") {?>class = "sidebar-selected" <?php } ?> >TQ OS Exeception</a>
+            </li>
+			<li>
+                <a href="/reports/tqvmware/tqexception" <?php if(isset($this->request->action) && $this->request->action == "tqexception") {?>class = "sidebar-selected" <?php } ?> >TQ Vmware Exception</a>
+            </li>
         </ul>
     </div>
 </div>

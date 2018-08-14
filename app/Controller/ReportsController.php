@@ -116,12 +116,18 @@ class ReportsController extends AppController {
         $deviceid   =   "";
         $this->set("framename", $frameName);
         $this->set("deviceid", $deviceid);
-        // debug($this->data);
+        // debug($reportType);
 		if ($searchName == 'tqhealth'){
 			$searchTablesArray = array("TqVmwareHealthcheckData", "TqLinuxHealthcheckData"); 
 			$searchTypes = array("TqLinuxHealthcheckData" => "tqhealth", "TqVmwareHealthcheckData" => 'tqhealth');
 		}elseif ($searchName == 'tqexception'){
-			$searchTablesArray = array("TqOsExceptionData", "TqVmwareExceptionData"); 
+            if($fromTable == "global"){
+                $searchTablesArray = array("TqOsExceptionData", "TqVmwareExceptionData"); 
+            }elseif($fromTable == "tqos"){
+                $searchTablesArray = array("TqOsExceptionData");
+            }elseif($fromTable == "tqvmware"){
+                $searchTablesArray = array("TqVmwareExceptionData");
+            }
 			$searchTypes = array("TqOsExceptionData" => "tqos", "TqVmwareExceptionData" => 'tqvmware');
 		}elseif($searchName == 'serverinventory'){
             if($fromTable == "global"){
@@ -856,6 +862,15 @@ class ReportsController extends AppController {
                             $results[$tableName] =  $this->$tableName->find("all", $options);
                         }
                     }
+                }elseif($searchName == 'tqexception'){
+                    $this->loadModel("$tableName");
+                    $options = array();
+                    if(!isset($this->data["Reports"]["export"])){
+                        $options['limit'] = 100;
+                    }else{
+                        $searchString = 'export';
+                    }
+                    $results[$tableName] =  $this->$tableName->find("all", $options);
                 }
                 
                 $this->set("fromSearch", 1);
@@ -909,9 +924,10 @@ class ReportsController extends AppController {
                     $rows[] = $rowValues;
                 }
                 $exportArray = $rows;
-				debug($exportArray);
+				// debug($exportArray);
                 $filename = $tableName."_" .$reportType."_".date("Y-m-d-H-i-s") .".csv";
-                $this->exportresults($exportArray, $filename);
+                // debug($filename);
+                // $this->exportresults($exportArray, $filename);
             }
         }
         // debug($results);
