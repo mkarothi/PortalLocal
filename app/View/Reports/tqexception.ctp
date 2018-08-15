@@ -27,12 +27,13 @@ foreach($searchTablesArray as $tableName) { ?>
         <table >
             <tr>
                 <td><?php 
-                    echo $this->Form->create("Reports", array("method" => "POST", "url" => "/reports/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
-                    echo $this->Form->hidden('export', array("value" => "export")); 
-                    echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
-                    echo $this->Form->end() ;
-                ?>
-                </td>
+            echo $this->Form->create("Reports", array("method" => "POST", "url" => "/reports/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
+           
+            echo $this->Form->hidden('export', array("value" => "export")); 
+            echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
+            echo $this->Form->end() ;
+        ?>
+		</td>
             <td style="text-align: center;"><h2><?php echo strtoupper($tableName) ?> search results:</h2></td>
             </tr>
         </table>
@@ -50,22 +51,14 @@ foreach($searchTablesArray as $tableName) { ?>
                         <th><?php echo ($fieldNames); ?></th>   
                     <?php } ?>
                 <?php } ?>
-                <?php foreach($results[$tableName][0][$tableName] as $fieldNames => $values){ ?> 
-				<?php if($fieldNames == "Location"){ ?>
-						<th style="width:100px;"><?php echo ($fieldNames); ?> </th>
-						<?php }else{ ?>
-								<th><?php echo ($fieldNames); ?></th>   
-						<?php } ?>
-				<?php } ?>
+
             </tr>
-            <?php foreach($results[$tableName] as $result){ // debug($result);?>
+            <?php foreach($results[$tableName] as $result){ ?>
                 <tr>
                     <?php foreach($result[$tableName] as $values){ ?>
 	                    	<td><?php echo ($values); ?></td>
                     <?php } ?>
-                    <?php foreach($result[$tableName] as $values){ ?>
-	                    	<td><?php echo ($values); ?></td>
-                    <?php } ?>
+
                 </tr>
             <?php } ?>
         </table>
