@@ -872,7 +872,6 @@ class ReportsController extends AppController {
                     }
                     $results[$tableName] =  $this->$tableName->find("all", $options);
                 }
-                
                 $this->set("fromSearch", 1);
             }elseif($searchName == 'nasgroupshares' && $reportType == "home"){
                 $this->loadModel("$tableName");
@@ -927,7 +926,7 @@ class ReportsController extends AppController {
 				// debug($exportArray);
                 $filename = $tableName."_" .$reportType."_".date("Y-m-d-H-i-s") .".csv";
                 // debug($filename);
-                // $this->exportresults($exportArray, $filename);
+                $this->exportresults($exportArray, $filename);
             }
         }
         // debug($results);
