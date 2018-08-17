@@ -923,9 +923,7 @@ class ReportsController extends AppController {
                     $rows[] = $rowValues;
                 }
                 $exportArray = $rows;
-				// debug($exportArray);
                 $filename = $tableName."_" .$reportType."_".date("Y-m-d-H-i-s") .".csv";
-                // debug($filename);
                 $this->exportresults($exportArray, $filename);
             }
         }
