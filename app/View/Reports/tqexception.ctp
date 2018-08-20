@@ -24,17 +24,18 @@ foreach($searchTablesArray as $tableName) { ?>
         <?php $hasResults = true;?>
         <div class="results results-<?php echo $iterator; ?>">
             
-        <table >
+        <table width="100%">
             <tr>
-                <td><?php 
-            echo $this->Form->create("Reports", array("method" => "POST", "url" => "/reports/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
-           
-            echo $this->Form->hidden('export', array("value" => "export")); 
-            echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
-            echo $this->Form->end() ;
-        ?>
-		</td>
-            <td style="text-align: center;"><h2><?php echo strtoupper($tableName) ?> search results:</h2></td>
+                <td width="5%"><?php 
+                        echo $this->Form->create("Reports", array("method" => "POST", "url" => "/reports/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
+                    
+                        echo $this->Form->hidden('export', array("value" => "export")); 
+                        echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
+                        echo $this->Form->end() ;
+                    ?>
+		        </td>
+                <td style="text-align: left;"><h2><?php echo strtoupper($tableName) ?> - Exceptions:</h2></td>
+                <td style="text-align: right;">Number of Exceptions: <strong><?php echo count($results[$tableName]); ?></strong>.</td>
             </tr>
         </table>
             
