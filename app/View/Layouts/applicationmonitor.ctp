@@ -43,13 +43,13 @@
 </head>
 <body>
 	
-<?php echo $this->element('applicationmonitor/header');?>
+<?php echo $this->element('Applicationmonitor/header');?>
 
-<?php echo $this->element('applicationmonitor/navbar');?>
+<?php echo $this->element('Applicationmonitor/navbar');?>
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <?php echo $this->element('applicationmonitor/leftnav');?>
+    <?php echo $this->element('Applicationmonitor/leftnav');?>
     
     <?php echo $content_for_layout; ?>
     
@@ -57,7 +57,7 @@
   </div>
 </div>
 
-<?php echo $this->element('applicationmonitor/footer');?>
+<?php echo $this->element('Applicationmonitor/footer');?>
 
 </body>
 </html>

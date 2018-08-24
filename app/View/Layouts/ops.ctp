@@ -48,13 +48,13 @@
 </head>
 <body>
 	
-<?php echo $this->element('ops/header');?>
+<?php echo $this->element('Ops/header');?>
 
-<?php echo $this->element('ops/navbar');?>
+<?php echo $this->element('Ops/navbar');?>
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <?php echo $this->element('ops/leftnav');?>
+    <?php echo $this->element('Ops/leftnav');?>
     
     <?php echo $content_for_layout; ?>
     
@@ -62,7 +62,7 @@
   </div>
 </div>
 
-<?php echo $this->element('ops/footer');?>
+<?php echo $this->element('Ops/footer');?>
 
 </body>
 </html>

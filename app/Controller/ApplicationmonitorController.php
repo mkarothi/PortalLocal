@@ -31,11 +31,15 @@ class ApplicationmonitorController extends AppController {
 		}
 	}
 	
-	function restartserver($configID){
+	function restartserver($configID,$isProd){
 		$this->autoRender = false;
 	   $this->log("restartserver Start");
 	   try{
-          exec("<FILE_WITH_PATH> " .$configID );
+		   if($isProd){
+			   exec("<FILE_WITH_PATH> " .$configID );
+		   }else{
+			   exec("<FILE_WITH_PATH> " .$configID );
+		   }
 		  $result['status'] = 1;
 		  $result['message'] = "Restart initiated";
        } catch(Exception $e){

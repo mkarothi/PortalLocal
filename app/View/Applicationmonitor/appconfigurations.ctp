@@ -27,16 +27,27 @@
 	  	foreach($jobResultData as $jobResult){ ?>
 	  		<tr>
 		  	<?php 
-		  		$configId = false;
+				  $configId = false;
+				  $isProd = 0;
 		  		foreach($jobResult['ApplicationMonitoringConfig'] as $columnName => $value){  ?>
+				  	<?php if($columnName == "Current_Status" && $value != '200-OK'){ ?> 
+						<td style="color:red"><strong><?php echo $value;?></strong></td>
+					<?php } else { ?>
   					<td><?php echo $value;?></td>
-			  	<?php 
-			  		if($columnName == 'Config_ID'){
-						$configId = $value; 
-			  		}
-				} ?>
+					<?php 
+						if($columnName == 'Config_ID'){
+							$configId = $value; 
+						}
+						if($columnName == 'Server_Role'){
+							$isProd = 0;
+							if($value == 'prod') {
+								$isProd = 1;
+							}
+						}
+					} ?>
+				  <?php } ?>
 		  		<td> 
-		  			<div id="submit-<?php echo $configId;?>"><input type="button" onclick="restartserver(<?php echo $configId;?>); return false;" value="Restart" /></div>	
+		  			<div id="submit-<?php echo $configId;?>"><input type="button" onclick="restartserver(<?php echo $configId;?>,<?php echo $isProd;?>); return false;" value="Restart" /></div>	
 	  			</td>
 		  	</tr>
 	  	<?php } ?>
@@ -56,8 +67,8 @@ $(document).ready(function(){
   });
 });
 
-function restartserver(configId){
-  	ajaxUrl = "/applicationmonitor/restartserver/"+configId;
+function restartserver(configId, isProd){
+  	ajaxUrl = "/applicationmonitor/restartserver/"+configId+"/"+isProd;
   	$.ajax( {
         url : ajaxUrl,
         cache : false,
