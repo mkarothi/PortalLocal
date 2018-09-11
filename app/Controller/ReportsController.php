@@ -7,7 +7,7 @@ class ReportsController extends AppController {
     
     function beforeFilter() {
         parent::beforeFilter();
-        Configure::write('debug', 0);
+        Configure::write('debug', 2);
         ini_set('memory_limit', '3092M');
         $this->layout = "report";
     }
@@ -871,6 +871,9 @@ class ReportsController extends AppController {
                         $searchString = 'export';
                     }
                     $results[$tableName] =  $this->$tableName->find("all", $options);
+                    $this->loadModel("TqHealthcheckData");
+                    $lastUpdatedDate = $this->TqHealthcheckData->find("first", array("fields" => array("MAX(Portal_Updated_Date) as lastUpdated" ) ) );
+                    $this->set("lastUpdated", $lastUpdatedDate[0]['lastUpdated']);
                 }
                 $this->set("fromSearch", 1);
             }elseif($searchName == 'nasgroupshares' && $reportType == "home"){
@@ -887,6 +890,10 @@ class ReportsController extends AppController {
                 $this->loadModel("$tableName");
                 $options['limit'] = 100;
                 $results[$tableName] =  $this->$tableName->find("all", $options);
+                $results[$tableName] =  $this->$tableName->find("all", $options);
+                $this->loadModel("TqHealthcheckData");
+                $lastUpdatedDate = $this->TqHealthcheckData->find("first", array("fields" => array("MAX(Portal_Updated_Date) as lastUpdated" ) ) );
+                $this->set("lastUpdated", $lastUpdatedDate[0]['lastUpdated']);
                 $this->set("fromSearch", 1);                
             }else{
                 $this->set("fromSearch", 0);

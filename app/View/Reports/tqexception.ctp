@@ -35,7 +35,11 @@ foreach($searchTablesArray as $tableName) { ?>
                     ?>
 		        </td>
                 <td style="text-align: left;"><h2><?php echo strtoupper($tableName) ?> - Exceptions:</h2></td>
-                <td style="text-align: right;">Number of Exceptions: <strong><?php echo count($results[$tableName]); ?></strong>.</td>
+                <?php if(isset($lastUpdated) ){ ?>
+                    <td style="text-align: right;">Number of Exceptions: <strong><?php echo count($results[$tableName]); ?> as of <?php echo $lastUpdated;?></strong>.</td>
+                <?php } else { ?>
+                    <td style="text-align: right;">Number of Exceptions: <strong><?php echo count($results[$tableName]); ?></strong>.</td>
+                <?php } ?>
             </tr>
         </table>
             
