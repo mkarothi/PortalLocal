@@ -1,4 +1,48 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<?php if((isset($fromSearch) && !$fromSearch) || !isset($fromSearch) ){ ?>
+
+<div class="container-fluid col-sm-10">
+    <br>
+	<form>
+  	<div class="col-sm-3 form-group">
+  		<input class="form-control" id="appFamily" type="text" placeholder="Application Family">
+  	</div>
+  	<div class="col-sm-1 form-group">
+  		OR
+  	</div>
+  <div class="col-sm-3 form-group">
+  	 <input class="form-control" id="appName" type="text" placeholder="Application Name">
+  </div>
+  <div class="col-sm-1 form-group">
+  	  AND
+  </div>
+  <div class="col-sm-3 form-group">
+	<select class="form-control" name="environment"  placeholder="Environment">
+        <option>​cfit</option>​
+        <option>ppt</option>
+        <option>pm</option>
+        <option>prod</option>
+		<option>qa</option>
+        <option>dev</option>
+        <option>prod1</option>
+		<option>prod2</option>
+    </select>
+  </div>
+  </form>
+</div>
+
+<div class="col-sm-10">
+	<div class="col-sm-5 text-right">
+		<button type="button" class="btn" id="restartApplication">Restart application Instances</button>
+  	</div>
+  	<div class="col-sm-5 text-left">
+  		<button type="button" class="btn" id="verifyDeployment">Verify Deployment File</button>
+  	</div>
+</div>
+
+<?php } else { ?>
+
 <div class="col-sm-11 text-left">
 	<br>
 	<div class="col-sm-6">
@@ -57,6 +101,7 @@
   </div>
 </div>
 
+<?php } ?>
 <script>
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
@@ -65,6 +110,14 @@ $(document).ready(function(){
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+
+  	$('#restartApplication').click( function() {
+		alert("restartApplication");
+    });
+
+	$('#verifyDeployment').click( function() {
+		alert("verifyDeployment");
+    });
 });
 
 function restartserver(configId, isProd){
