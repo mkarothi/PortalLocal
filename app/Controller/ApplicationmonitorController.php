@@ -22,9 +22,27 @@ class ApplicationmonitorController extends AppController {
 	}
 	
 	function appconfigurations(){
+		$jobResultData = array();
 		$this->loadModel('ApplicationMonitoringConfig');
-		$jobResultData = $this->ApplicationMonitoringConfig->find('all'); //, array("order" => "Created_On desc" )
+		$conditions = array();
+		if(!empty($this->data)){
+			if($this->data['Appconfigurations']['applicationfamily']){
+				$conditions["Application_Family"] = $this->data['Appconfigurations']['applicationfamily'];
+			}
+			if($this->data['Appconfigurations']['applicationname']){
+				$conditions["Application_Name"] = $this->data['Appconfigurations']['applicationname'];
+			}
+			if($this->data['Appconfigurations']['environment']){
+				$conditions["Server_Role"] = $this->data['Appconfigurations']['environment'];
+			}
+			$jobResultData = $this->ApplicationMonitoringConfig->find('all', array("conditions" => $conditions) ); //, array("order" => "Created_On desc" )
+			
+			$this->set('fromSearch',  1);
+		}else{
+			$this->set('fromSearch',  0);
+		}
 		$this->set('jobResultData',  $jobResultData);
+
 		
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
 			$this->exportsheet($jobResultData, 'ApplicationMonitoringConfig');

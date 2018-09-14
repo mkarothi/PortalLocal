@@ -1,35 +1,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<?php if((isset($fromSearch) && !$fromSearch) || !isset($fromSearch) ){ ?>
+<?php if((isset($fromSearch) && !$fromSearch) ){ ?>
 
 <div class="container-fluid col-sm-10">
     <br>
-	<form>
-  	<div class="col-sm-3 form-group">
-  		<input class="form-control" id="appFamily" type="text" placeholder="Application Family">
-  	</div>
+	<?php 
+		echo $this->Form->create("Appconfigurations", array("method" => "POST", "class" => "reports-form-tag", "id" => "AppconfigurationsForm") );
+		
+		echo $this->Form->input('applicationfamily', array("type" => "text", "placeholder"=>"Application Family", 
+															 "class" => "col-sm-3 form-group", "label" => false)); ?>
   	<div class="col-sm-1 form-group">
   		OR
   	</div>
-  <div class="col-sm-3 form-group">
-  	 <input class="form-control" id="appName" type="text" placeholder="Application Name">
-  </div>
+  <?php 
+		echo $this->Form->input('applicationname', array("type" => "text", "placeholder"=>"Application Name", 
+															 "class" => "col-sm-3 form-group", "label" => false)); ?>
   <div class="col-sm-1 form-group">
   	  AND
   </div>
   <div class="col-sm-3 form-group">
-	<select class="form-control" name="environment"  placeholder="Environment">
-        <option>​cfit</option>​
-        <option>ppt</option>
-        <option>pm</option>
-        <option>prod</option>
-		<option>qa</option>
-        <option>dev</option>
-        <option>prod1</option>
-		<option>prod2</option>
-    </select>
-  </div>
-  </form>
+	<?php 
+		$environmentType = array("​cfit" => "​cfit", "ppt" => "ppt", "pm" => "pm", "qa" => "qa", "dev" => "dev", "prod" => "prod", "prod1" => "prod1", "prod2" => "prod2");
+		echo $this->Form->input('environment', array("type" => "select", "empty"=>"--Environment--", "options" => $environmentType, 
+															 "class" => "col-sm-3 form-control", "label" => false, "div" => false)); ?>
+
+  <?php echo $this->Form->end() ; ?>
 </div>
 
 <div class="col-sm-10">
@@ -112,7 +107,8 @@ $(document).ready(function(){
   });
 
   	$('#restartApplication').click( function() {
-		alert("restartApplication");
+		$('#AppconfigurationsForm').attr('action', '/applicationmonitor/appconfigurations');
+		$("#AppconfigurationsForm").submit();
     });
 
 	$('#verifyDeployment').click( function() {
