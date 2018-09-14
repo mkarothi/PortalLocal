@@ -13,7 +13,9 @@
      </ul>
 </div>
 <?php } ?>
-
+<div class="search-note-text">
+			Note: Following excption list is based on Team Quest agent failed to collect performance data anywhere between last 12 hrs to 30 days 
+</div>
 <div class="main">
 <?php $iterator = 1;?>
 <?php $hasResults = false;?>
