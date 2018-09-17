@@ -33,7 +33,7 @@ class ApplicationmonitorController extends AppController {
 				$conditions["Application_Name"] = $this->data['Appconfigurations']['applicationname'];
 			}
 			if($this->data['Appconfigurations']['environment']){
-				$conditions["Server_Role"] = $this->data['Appconfigurations']['environment'];
+				$conditions["Environment"] = $this->data['Appconfigurations']['environment'];
 			}
 			$jobResultData = $this->ApplicationMonitoringConfig->find('all', array("conditions" => $conditions) ); //, array("order" => "Created_On desc" )
 			
@@ -43,6 +43,58 @@ class ApplicationmonitorController extends AppController {
 		}
 		$this->set('jobResultData',  $jobResultData);
 
+		
+		if(isset($_POST['export']) && $_POST['export'] == 'export'){
+			$this->exportsheet($jobResultData, 'ApplicationMonitoringConfig');
+		}
+	}
+
+	function verifydeployment($requestId = ""){
+		$jobResultData 	= array();
+		$conditions 	= array();
+		$deploymentRequests = array();
+		$this->loadModel('ApplicationDeploymentfileStatus');
+		if(!empty($this->data)){
+			$this->loadModel('ApplicationMonitoringConfig');
+			if($this->data['Appconfigurations']['applicationfamily']){
+				$conditions["Application_Family"] = $this->data['Appconfigurations']['applicationfamily'];
+			}
+			if($this->data['Appconfigurations']['applicationname']){
+				$conditions["Application_Name"] = $this->data['Appconfigurations']['applicationname'];
+			}
+			if($this->data['Appconfigurations']['environment']){
+				$conditions["Environment"] = $this->data['Appconfigurations']['environment'];
+			}
+			$jobResultData = $this->ApplicationMonitoringConfig->find('all', array("conditions" => $conditions) ); //, array("order" => "Created_On desc" )
+			
+			if($jobResultData){
+				$requestId = time();
+				foreach($jobResultData as $jobResult){
+					$deploymentdetails['Application_Name'] = $jobResult['ApplicationMonitoringConfig']['Application_Name'];
+					$deploymentdetails['Environment'] = $jobResult['ApplicationMonitoringConfig']['Environment'];
+					$deploymentdetails['Server_Name'] = $jobResult['ApplicationMonitoringConfig']['Server_Name'];
+					$deploymentdetails['Instance_Name'] = $jobResult['ApplicationMonitoringConfig']['Instance_Name'];
+					$deploymentdetails['Deployment_File'] = $jobResult['ApplicationMonitoringConfig']['Deployment_File'];
+					$deploymentdetails['Request_ID'] = $requestId;
+					$this->ApplicationDeploymentfileStatus->save($deploymentdetails);
+				}
+				$this->set("requestId", $requestId);
+
+				$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
+			}
+			$this->set('fromSearch',  1);
+		}else{
+			if($requestId){
+				$deploymnetOptions["conditions"] = array("Request_ID" => $requestId);
+			}else{
+				$deploymnetOptions["group"] = "Request_ID DESC";
+				$deploymnetOptions["limit"] = 20;
+			}
+			$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", $deploymnetOptions );
+			$this->set('fromSearch',  0);
+		}
+		$this->set('jobResultData',  $jobResultData);
+		$this->set("deploymentRequests", $deploymentRequests);
 		
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
 			$this->exportsheet($jobResultData, 'ApplicationMonitoringConfig');

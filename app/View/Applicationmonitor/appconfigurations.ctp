@@ -21,10 +21,9 @@
   <div class="col-sm-3 form-group">
 	<?php 
 		$environmentType = array("​cfit" => "​cfit", "ppt" => "ppt", "pm" => "pm", "qa" => "qa", "dev" => "dev", "prod" => "prod", "prod1" => "prod1", "prod2" => "prod2");
-		echo $this->Form->input('environment', array("type" => "select", "empty"=>"--Environment--", "options" => $environmentType, 
-															 "class" => "col-sm-3 form-control", "label" => false, "div" => false)); ?>
-
-  <?php echo $this->Form->end() ; ?>
+		echo $this->Form->input('environment', array("type"  => "select", "empty" => " --Environment-- ", "options" => $environmentType,
+													 "class" => "col-sm-3 form-control", "label" => false, "div" => false)); ?>
+  	<?php echo $this->Form->end() ; ?>
 </div>
 
 <div class="col-sm-10">
@@ -112,7 +111,8 @@ $(document).ready(function(){
     });
 
 	$('#verifyDeployment').click( function() {
-		alert("verifyDeployment");
+		$('#AppconfigurationsForm').attr('action', '/applicationmonitor/verifydeployment');
+		$("#AppconfigurationsForm").submit();
     });
 });
 
