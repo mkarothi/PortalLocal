@@ -50,7 +50,7 @@
 				Infrastructure Holistic view, Capacity & performance reports for physical and virtual servers.
 			</p>
 			<div class="more_button">
-				<a href="/reports/CMDB/serverinventory" target="_blank">Go To Reports</a>
+				<a href="/applicationmonitor" target="_blank">Go To Reports</a>
 			</div>
 		</center>
 	</div>
@@ -62,7 +62,7 @@
 				Opeartion excellence Dash boards, Automation, Reports and Much More.,
 			</p>
 			<div class="more_button">
-				<a href="/covers">Go To Reports</a>
+				<a href="/ops">Go To Reports</a>
 			</div>
 		</center>
 	</div>
@@ -86,7 +86,7 @@
 			</p>
 			<div class="more_button">
 				 <!-- <a href="/vmreports/global/serverinventory-123">Go To Reports</a> -->
-				<a href="/comingsoon">Go To Reports</a>
+				<a href="/reports/CMDB/serverinventory">Go To Reports</a>
 			</div>
 		</center>
 	</div>
