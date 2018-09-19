@@ -4,7 +4,7 @@
 		&nbsp;
 	</div>
 	<!-- Logo -->
-    <center><a href="/ops"><span class="logo-title"><img src="/images/covers/logo.png" alt=""/></a></center>
+    <center><a href="/ops"><span class="logo-title"><img src="/images/logo.png" alt=""/></a></center>
 	<!-- END Logo -->
 	<br>
 	<br>
