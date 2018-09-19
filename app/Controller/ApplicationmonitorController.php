@@ -80,6 +80,13 @@ class ApplicationmonitorController extends AppController {
 				}
 				$this->set("requestId", $requestId);
 
+				#$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
+
+				$appName= $jobResult['ApplicationMonitoringConfig']['Application_Name'];
+				$env = $jobResult['ApplicationMonitoringConfig']['Environment'];
+					
+				exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+				sleep(5);
 				$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
 			}
 			$this->set('fromSearch',  1);
@@ -106,9 +113,9 @@ class ApplicationmonitorController extends AppController {
 	   $this->log("restartserver Start");
 	   try{
 		   if($isProd){
-			   exec("<FILE_WITH_PATH> " .$configID );
+			   exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/RestartInstance.pl " .$configID );
 		   }else{
-			   exec("<FILE_WITH_PATH> " .$configID );
+			   exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/RestartInstance.pl " .$configID );
 		   }
 		  $result['status'] = 1;
 		  $result['message'] = "Restart initiated";
