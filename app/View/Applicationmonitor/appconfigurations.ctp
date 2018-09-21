@@ -48,6 +48,12 @@
 			<input class="form-control" type="submit" value="export">
 		</form>
 	</div>
+	<div class="col-sm-2 pull-right">
+		<form method="POST">
+			<input name="updatestatus" type="hidden" value="updatestatus">
+			<input class="form-control" type="submit" value="Update Current Status">
+		</form>
+	</div>
 	<br>
 	<br>
 	<div class="col-sm-12">
