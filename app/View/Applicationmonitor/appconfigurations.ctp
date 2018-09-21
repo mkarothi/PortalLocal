@@ -1,5 +1,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<style>
+.loader{top:0;bottom:0;right:0;left:0; opacity:0.3; position:absolute; background-color:#000; display:none;}
+.loader img{    top: 100px;
+    left: 50%;
+    position: absolute;
+    background: #000;
+    opacity: 0.8;}
+</style>
 <?php if((isset($fromSearch) && !$fromSearch) ){ ?>
 
 <div class="container-fluid col-sm-10">
@@ -48,12 +55,16 @@
 			<input class="form-control" type="submit" value="export">
 		</form>
 	</div>
+	<?php if($environment) { ?>
+	<div class="loader"> <img src="/img/loading.gif" id="loadingImg" /></div>
+	
 	<div class="col-sm-2 pull-right">
 		<form method="POST">
 			<input name="updatestatus" type="hidden" value="updatestatus">
-			<input class="form-control" type="submit" value="Update Current Status">
+			<input class="form-control" type="button" onclick="updateStatus('<?php echo $applicationFamily;?>','<?php echo $applicationName;?>','<?php echo $environment;?>'); return false;"  value="Update Current Status" />
 		</form>
 	</div>
+	<?php } ?>
 	<br>
 	<br>
 	<div class="col-sm-12">
@@ -91,7 +102,7 @@
 					} ?>
 				  <?php } ?>
 		  		<td> 
-		  			<div id="submit-<?php echo $configId;?>"><input type="button" onclick="restartserver(<?php echo $configId;?>,<?php echo $isProd;?>); return false;" value="Restart" /></div>	
+		  			<div id="submit-<?php echo $configId;?>"><input type="button" onclick="restartserver('<?php echo $configId;?>','<?php echo $isProd;?>'); return false;" value="Restart" /></div>	
 	  			</td>
 		  	</tr>
 	  	<?php } ?>
@@ -104,12 +115,12 @@
 <?php } ?>
 <script>
 $(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
+  	$("#myInput").on("keyup", function() {
+    	var value = $(this).val().toLowerCase();
+    	$("#myTable tr").filter(function() {
+      		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    	});
+  	});
 
   	$('#restartApplication').click( function() {
 		$('#AppconfigurationsForm').attr('action', '/applicationmonitor/appconfigurations');
@@ -121,6 +132,26 @@ $(document).ready(function(){
 		$("#AppconfigurationsForm").submit();
     });
 });
+
+function updateStatus(applicationFamily, applicationName, environment){
+	$('.loader').show();
+  	ajaxUrl = "/applicationmonitor/updatestatus/"+applicationFamily+"/"+applicationName+"/"+environment;
+  	$.ajax( {
+        url : ajaxUrl,
+        cache : false,
+        dataType:"json",
+        success : function (data) {
+			$('.loader').hide();
+			if(data.status == 1){
+				window.location.reload();
+			}
+        },
+        error : function() {
+            alert('Restart failed');
+			$('#loadingImg').hide();
+        }
+    });
+}
 
 function restartserver(configId, isProd){
   	ajaxUrl = "/applicationmonitor/restartserver/"+configId+"/"+isProd;

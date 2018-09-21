@@ -25,15 +25,18 @@ class ApplicationmonitorController extends AppController {
 		$jobResultData = array();
 		$this->loadModel('ApplicationMonitoringConfig');
 		$conditions = array();
+		$applicationFamily = 0;
+		$applicationName = 0;
+		$environment = 0;
 		if(!empty($this->data)){
-			if(isset($this->data['Appconfigurations']['applicationfamily'])){
-				$conditions["Application_Family"] = $this->data['Appconfigurations']['applicationfamily'];
+			if(isset($this->data['Appconfigurations']['applicationfamily']) && $this->data['Appconfigurations']['applicationfamily']){
+				$applicationFamily = $conditions["Application_Family"] = $this->data['Appconfigurations']['applicationfamily'];
 			}
-			if(isset($this->data['Appconfigurations']['applicationname'])){
-				$conditions["Application_Name"] = $this->data['Appconfigurations']['applicationname'];
+			if(isset($this->data['Appconfigurations']['applicationname']) && $this->data['Appconfigurations']['applicationname']){
+				$applicationName = $conditions["Application_Name"] = $this->data['Appconfigurations']['applicationname'];
 			}
-			if(isset($this->data['Appconfigurations']['environment'])){
-				$conditions["Environment"] = $this->data['Appconfigurations']['environment'];
+			if(isset($this->data['Appconfigurations']['environment']) && $this->data['Appconfigurations']['environment']){
+				$environment = $conditions["Environment"] = $this->data['Appconfigurations']['environment'];
 			}
 			$optionsArray['conditions'] = $conditions;
 			if(isset($_POST['export']) && $_POST['export'] == 'export'){
@@ -47,6 +50,9 @@ class ApplicationmonitorController extends AppController {
 			$this->set('fromSearch',  0);
 		}
 		$this->set('jobResultData',  $jobResultData);
+		$this->set('applicationName',  $applicationName);
+		$this->set('applicationFamily',  $applicationFamily);
+		$this->set('environment',  $environment);
 
 		
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
@@ -98,6 +104,8 @@ class ApplicationmonitorController extends AppController {
 				}
 				sleep(5);
 				$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
+			} else{
+				$this->set('noResults',  1);
 			}
 			$this->set('fromSearch',  1);
 		}else{
@@ -121,8 +129,8 @@ class ApplicationmonitorController extends AppController {
 	
 	function restartserver($configID,$isProd){
 		$this->autoRender = false;
-	   $this->log("restartserver Start");
-	   try{
+	   	$this->log("restartserver Start");
+	   	try{
 		   if($isProd){
 			   exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/RestartInstance.pl " .$configID );
 		   }else{
@@ -130,13 +138,35 @@ class ApplicationmonitorController extends AppController {
 		   }
 		  $result['status'] = 1;
 		  $result['message'] = "Restart initiated";
-       } catch(Exception $e){
+       	} catch(Exception $e){
    		  $result['status'] = 0;
 		  $result['message'] = $e->getMessage();
-          $this->log("restartserver has error - ". $e->getMessage());
-       }
-	   echo json_encode($result);
-	   exit;
+       	   $this->log("restartserver has error - ". $e->getMessage());
+       	}
+	   	echo json_encode($result);
+	   	exit;
+	}
+
+	function updatestatus($applicationFamily, $applicationName, $environment){
+		$this->autoRender = false;
+		$this->log("updatestatus Start");
+		
+		// $applicationFamily - default value is 0
+		// $applicationName - default value is 0
+		// $environment - default value is 0
+
+		try{
+			exec("ll ");
+		   	$result['status'] = 1;
+		   	$result['message'] = "Restart initiated";
+		} catch(Exception $e){
+			$result['status'] = 0;
+			$result['message'] = $e->getMessage();
+			$this->log("updatestatus has error - ". $e->getMessage());
+		}
+		sleep(5);
+		echo json_encode($result);
+	   	exit;
 	}
 
 

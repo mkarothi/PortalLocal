@@ -7,9 +7,13 @@
         </div>
         <br />
         <br />
-    <?php } else { ?>
+    <?php } elseif(!isset($noResults)) { ?>
         <div class="container-fluid col-sm-10">
             <h3>Latests Requests:</h3>
+        </div>
+    <?php } elseif(isset($noResults) && $noResults) { ?>
+        <div class="container-fluid col-sm-10">
+            <h3>No results with search criteria.</h3>
         </div>
     <?php } ?>
 
