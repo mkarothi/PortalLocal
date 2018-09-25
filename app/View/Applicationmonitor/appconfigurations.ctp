@@ -56,7 +56,7 @@
 		</form>
 	</div>
 	<?php if($environment) { ?>
-	<div class="loader"> <img src="/img/loading.gif" id="loadingImg" /></div>
+	<div class="loader"> <img src="/images/loading.gif" id="loadingImg" /></div>
 	
 	<div class="col-sm-2 pull-right">
 		<form method="POST">
