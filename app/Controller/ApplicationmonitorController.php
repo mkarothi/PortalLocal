@@ -97,10 +97,10 @@ class ApplicationmonitorController extends AppController {
 				$env = $jobResult['ApplicationMonitoringConfig']['Environment'];
 				if(strrpos($env, "prod") !== false){
 					// Prod environment
-					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
 				}else{
 					// Other environments
-					// exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+					 exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
 				}
 				sleep(5);
 				$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
@@ -156,7 +156,7 @@ class ApplicationmonitorController extends AppController {
 		// $environment - default value is 0
 
 		try{
-			exec("ll ");
+			exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/UpdateStatus.pl " . $applicationFamily . " " . $applicationName . " " . $environment );
 		   	$result['status'] = 1;
 		   	$result['message'] = "Restart initiated";
 		} catch(Exception $e){
