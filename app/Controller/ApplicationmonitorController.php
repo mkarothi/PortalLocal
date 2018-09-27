@@ -187,6 +187,10 @@ class ApplicationmonitorController extends AppController {
         $filename = $tableName."_".date("Y-m-d-H-i-s") .".xls";
         $this->exportresults($exportArray, $filename);
 	}
+
+	function tigerxcommand(){
+		
+	}
 	  
 }
 ?>
