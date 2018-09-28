@@ -188,8 +188,30 @@ class ApplicationmonitorController extends AppController {
         $this->exportresults($exportArray, $filename);
 	}
 
-	function tigerxcommand(){
+	function tigerxcommand($requestId = 0){
 		
+		$this->loadModel('MultiserverCommandOutputData');
+		$commandOptions = array();
+		if($requestId){
+			$commandOptions['conditions'] = array("Request_ID" => $requestId);
+		}
+		$commandOptions['limit'] = 10;
+
+		$commandOutputsData = $this->MultiserverCommandOutputData->find("all", $commandOptions);
+
+		$this->set('commandOutputsData', $commandOutputsData);
+
+		if(!empty($this->data)){
+			$this->MultiserverCommandOutputData->id = Null;
+			$requestId = time();
+			$commandOptions['Request_ID'] = $requestId;
+			$commandOptions['Server_Name'] = $this->data['tigerx']['servernames'];
+			$commandOptions['Command_To_Run'] = json_encode($this->data['cmd']);
+
+			$this->MultiserverCommandOutputData->save($commandOptions);
+		}
+
+		$this->set('requestId', $requestId);
 	}
 	  
 }
