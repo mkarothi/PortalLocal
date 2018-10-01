@@ -202,13 +202,27 @@ class ApplicationmonitorController extends AppController {
 		$this->set('commandOutputsData', $commandOutputsData);
 
 		if(!empty($this->data)){
-			$this->MultiserverCommandOutputData->id = Null;
 			$requestId = time();
-			$commandOptions['Request_ID'] = $requestId;
-			$commandOptions['Server_Name'] = $this->data['tigerx']['servernames'];
-			$commandOptions['Command_To_Run'] = json_encode($this->data['cmd']);
+			$this->MultiserverCommandOutputData->id = Null;
 
-			$this->MultiserverCommandOutputData->save($commandOptions);
+			$commandOptions['Request_ID']	= $requestId;
+
+			$serverNames = explode('\r\n', $this->data['tigerx']['servernames']);
+			$commands = $this->data['cmd'];
+
+			foreach($serverNames as $serverName){
+				if($this->data['tigerx']['servernames']){
+					$commandOptions['Server_Name']	= $this->data['tigerx']['servernames'];
+				}
+				foreach($commands as $cmd){
+					$commandOptions['Command_To_Run'] = $cmd;
+					$this->MultiserverCommandOutputData->save($commandOptions);
+					// $serverName - Name of the server
+					// $requestId - Name of the server
+					// $cmd - Command
+					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+				}
+			}
 		}
 
 		$this->set('requestId', $requestId);
