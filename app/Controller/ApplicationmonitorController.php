@@ -191,39 +191,44 @@ class ApplicationmonitorController extends AppController {
 	function tigerxcommand($requestId = 0){
 		
 		$this->loadModel('MultiserverCommandOutputData');
-		$commandOptions = array();
-		if($requestId){
-			$commandOptions['conditions'] = array("Request_ID" => $requestId);
-		}
-		$commandOptions['limit'] = 10;
-
-		$commandOutputsData = $this->MultiserverCommandOutputData->find("all", $commandOptions);
-
-		$this->set('commandOutputsData', $commandOutputsData);
 
 		if(!empty($this->data)){
 			$requestId = time();
 			$this->MultiserverCommandOutputData->id = Null;
 
-			$commandOptions['Request_ID']	= $requestId;
+			$commandOptionsData['Request_ID']	= $requestId;
 
-			$serverNames = explode('\r\n', $this->data['tigerx']['servernames']);
+			$serverNames = explode(PHP_EOL, $this->data['tigerx']['servernames']);
 			$commands = $this->data['cmd'];
 
 			foreach($serverNames as $serverName){
-				if($this->data['tigerx']['servernames']){
-					$commandOptions['Server_Name']	= $this->data['tigerx']['servernames'];
-				}
-				foreach($commands as $cmd){
-					$commandOptions['Command_To_Run'] = $cmd;
-					$this->MultiserverCommandOutputData->save($commandOptions);
-					// $serverName - Name of the server
-					// $requestId - Name of the server
-					// $cmd - Command
-					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+				if($serverName){
+					$commandOptionsData['Server_Name']	= $serverName;
+					foreach($commands as $cmd){
+						if($cmd){
+							$commandOptionsData['Command_To_Run'] = $cmd;
+							$this->MultiserverCommandOutputData->save($commandOptionsData);
+							// $serverName - Name of the server
+							// $requestId - Name of the server
+							// $cmd - Command
+							// exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+						}
+					}
 				}
 			}
 		}
+		$commandOptions = array();
+		$commandOptions['limit'] = 50;
+		$commandOptions['order'] = 'Request_ID DESC';
+
+		if($requestId){
+			$commandOptions['conditions'] = array("Request_ID" => $requestId);
+		}else{
+			// $commandOptions['group'] = 'Request_ID';
+		}
+		$commandOutputsData = $this->MultiserverCommandOutputData->find("all", $commandOptions);
+
+		$this->set('commandOutputsData', $commandOutputsData);
 
 		$this->set('requestId', $requestId);
 	}

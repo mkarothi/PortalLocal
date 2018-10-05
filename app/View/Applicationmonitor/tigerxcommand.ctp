@@ -15,10 +15,10 @@
                 <?php echo $this->Form->input('cmd.1', array("label" => false, "type" => "text", "class" => 'input-lg form-control', "placeholder" => "Command 1")); ?> 
             </div>
             <div class ="form-group">
-                <?php echo $this->Form->input('cmd.2', array("label" => false, "type" => "text", "class" => 'input-lg form-control', "placeholder" => "Command 1")); ?> 
+                <?php echo $this->Form->input('cmd.2', array("label" => false, "type" => "text", "class" => 'input-lg form-control', "placeholder" => "Command 2")); ?> 
             </div>
             <div class ="form-group">
-                <?php echo $this->Form->input('cmd.3', array("label" => false, "type" => "text", "class" => 'input-lg form-control', "placeholder" => "Command 1")); ?> 
+                <?php echo $this->Form->input('cmd.3', array("label" => false, "type" => "text", "class" => 'input-lg form-control', "placeholder" => "Command 3")); ?> 
             </div>
             <div class="text-right">
                 <button type="button" class="btn" id="tigerXSubmit">Submit</button>
@@ -42,20 +42,29 @@
             </tr></thead>
             <tbody id="myTable">
             <?php 
+                $key = 0;
                 foreach($commandOutputsData as $commandOutputs){ ?>
                 <tr>
                 <?php 
                     foreach($commandOutputs['MultiserverCommandOutputData'] as $columnName => $value){  ?>
                         <?php if($columnName == 'Request_ID'){ ?> 
                             <td><a href="/applicationmonitor/tigerxcommand/<?php echo $value;?>"><?php echo $value;?></a></td>
-                        <?php  }elseif($columnName == 'Command_Output'){ ?> 
-                            <td><pre><?php echo $value;?></pre></td>
+                        <?php  }elseif($columnName == 'Command_Output'){ ?>
+                            <td>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key;?>">Show Output..</a>
+                                <div id="collapse<?php echo $key;?>" class="panel-collapse collapse">
+                                    <pre><?php echo $value;?></pre>
+                                </div>
+                            </td>
+                            
                         <?php  }else{ ?>
                         <td><?php echo $value;?></td>
                         <?php  } ?>
                     <?php } ?>
                 </tr>
-            <?php } ?>
+            <?php 
+                $key++;
+                } ?>
             </tbody>
         </table>
     <?php } ?>
