@@ -48,7 +48,11 @@
                 <?php 
                     foreach($commandOutputs['MultiserverCommandOutputData'] as $columnName => $value){  ?>
                         <?php if($columnName == 'Request_ID'){ ?> 
-                            <td><a href="/applicationmonitor/tigerxcommand/<?php echo $value;?>"><?php echo $value;?></a></td>
+                            <?php if($requestId) { ?>
+                                <td><?php echo $value;?></td>
+                            <?php }else{?>
+                                <td><a href="/applicationmonitor/tigerxcommand/<?php echo $value;?>"><?php echo $value;?></a></td>
+                            <?php } ?>
                         <?php  }elseif($columnName == 'Command_Output'){ ?>
                             <td>
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key;?>">Show Output..</a>
