@@ -54,13 +54,16 @@
                                 <td><a href="/applicationmonitor/tigerxcommand/<?php echo $value;?>"><?php echo $value;?></a></td>
                             <?php } ?>
                         <?php  }elseif($columnName == 'Command_Output'){ ?>
+                            <?php if(!$requestId) { ?>
                             <td>
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key;?>">Show Output..</a>
                                 <div id="collapse<?php echo $key;?>" class="panel-collapse collapse">
                                     <pre><?php echo $value;?></pre>
                                 </div>
                             </td>
-                            
+                            <?php }else{?>
+                                <td><pre><?php echo $value;?></pre></td>
+                            <?php } ?>
                         <?php  }else{ ?>
                         <td><?php echo $value;?></td>
                         <?php  } ?>
