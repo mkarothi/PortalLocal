@@ -10,19 +10,19 @@ class BatchgoalsController extends AppController {
 	}
 	
 	function index(){
-		$this->loadModel('BatchJobsStatusData');
+		$this->loadModel('BatchGoalSchedule');
 		
-		$conditions = array('BatchJobsStatusData.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 24 HOUR) ' );
+		$conditions = array();
 		
 		if(isset($_POST['days']) && $_POST['days'] == 7){
-			$conditions = array('BatchJobsStatusData.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 7 DAY) ' );
+			// $conditions = array('BatchGoalSchedule.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 7 DAY) ' );
 		}
 		
-		$jobResultData = $this->BatchJobsStatusData->find('all', array("conditions" => $conditions, 
-																	   "order" => "Latest_Check_Time desc" ) );
-		$this->set('jobResultData',  $jobResultData);
+		$batchGoalResultData = $this->BatchGoalSchedule->find('all', array("conditions" => $conditions) );
+
+		$this->set('batchGoalResultData',  $batchGoalResultData);
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
-			$this->exportsheet($jobResultData, 'BatchJobsStatusData');
+			$this->exportsheet($batchGoalResultData, 'BatchGoalSchedule');
 		}
 	}
 	

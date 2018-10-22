@@ -47,41 +47,28 @@
 
 <div class="col-sm-11 text-left"> 
 	<div class="col-sm-10 text-left"><?php echo $this->Session->flash(); ?></div><br>
-	<div class="col-sm-6">
+	<!-- <div class="col-sm-6">
 		<input class="form-control" id="myInput" type="text" placeholder="Search...">
 	</div>
-	<div class="col-sm-1 pull-right">
-		<form method="POST">
-			<input name="export" type="hidden" value="export">
-			<input class="form-control" type="submit" value="Export">
-		</form>
-	</div>
-	<div class="col-sm-1 pull-right">
-		<form method="POST">
-			<input name="export" type="hidden" value="export">
-			<input name="days" type="hidden" value="7">
-			<input class="form-control" type="submit" value="Export 1 Week">
-		</form>
-	</div>
-	<br>
+	<br> -->
 	<br>
 	<div class="col-sm-12">
-	<?php if($jobResultData){ ?>
+	<?php if($batchGoalResultData){ ?>
 	  	<table class="table table-condensed table-responsive table-bordered">
 		 <thead><tr> 		
-		<?php foreach($jobResultData[0]['BatchJobsStatusData'] as $columnName => $value){ ?>
+		<?php foreach($batchGoalResultData[0]['BatchGoalSchedule'] as $columnName => $value){ ?>
 	  		<th><?php echo $columnName;?></th>
 	  	<?php } ?>
 	  	</tr></thead>
 	  	<tbody id="myTable">
-	  	<?php foreach($jobResultData as $jobResult){ ?>
+	  	<?php foreach($batchGoalResultData as $jobResult){ ?>
 	  		<tr>
-		  	<?php foreach($jobResult['BatchJobsStatusData'] as $columnName => $value){ ?>
+		  	<?php foreach($jobResult['BatchGoalSchedule'] as $columnName => $value){ ?>
 		  		
 		  		<?php if($columnName == 'Job_Entry'){ ?>
 		  			<td>
-		  				<?php if($jobResult['BatchJobsStatusData']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
-            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/ops/editjobstatus?jobEntry=<?php echo $jobResult['BatchJobsStatusData']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
+		  				<?php if($jobResult['BatchGoalSchedule']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
+            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/ops/editjobstatus?jobEntry=<?php echo $jobResult['BatchGoalSchedule']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
 	  					<?php }else{ ?> 	
 		  					<?php echo $value;?>
 		  				<?php } ?>
