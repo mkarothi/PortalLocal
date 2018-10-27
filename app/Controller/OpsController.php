@@ -103,6 +103,14 @@ class OpsController extends AppController {
 			}
 			$batchJobStatusDetails['Job_Status_Comments'] .= "'";
 			$batchJobStatusDetails['Job_Actual_End_Time'] = " NOW() ";
+
+			if($this->data['Ops']['action'] != 'ignore'){
+				$action = $this->data['Ops']['action'];
+				$jobName = $jobResultData['BatchJobsStatusData']['Job_Name'];
+				$serverName = $jobResultData['BatchJobsStatusData']['Server_Name'];
+				// Write the script to invoke
+				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
+			}
 			
 			if($this->BatchJobsStatusData->UpdateAll($batchJobStatusDetails, $conditions)){
 				$statusUpdated = true;

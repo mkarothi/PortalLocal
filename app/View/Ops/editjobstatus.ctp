@@ -138,6 +138,12 @@ $(document).ready(function(){
 		    <label for="OpsWhy">Why:</label> 
 		    <?php echo $this->Form->input("why", array("label"=> false, "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
 	  </div>
+
+    <div class="form-group">
+		    <label for="OpsAction">Action:</label> 
+		    <?php echo $this->Form->input("action",array('label'=>false, 'class'=> 'form-control required', 'options' => array('ignore' => 'Ignore',
+                                                    'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
+	  </div>
 		
 	  <button type="submit" class="btn btn-default">Submit</button>
 	<?php echo $this->Form->end();?>
