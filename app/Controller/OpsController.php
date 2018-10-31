@@ -105,7 +105,7 @@ class OpsController extends AppController {
 			$batchJobStatusDetails['Job_Actual_End_Time'] = " NOW() ";
 
 			if($this->data['Ops']['action'] != 'ignore'){
-				$action = $this->data['Ops']['action'];
+				$action = $this->data['Ops']['action']; //restart onhold onice
 				$jobName = $jobResultData['BatchJobsStatusData']['Job_Name'];
 				$serverName = $jobResultData['BatchJobsStatusData']['Server_Name'];
 				// Write the script to invoke

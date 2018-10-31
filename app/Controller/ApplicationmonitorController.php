@@ -9,19 +9,6 @@ class ApplicationmonitorController extends AppController {
 	}
 	
 	function index(){
-		$this->loadModel('ApplicationMonitoringStatus');
-		
-		$jobResultData = $this->ApplicationMonitoringStatus->find('all', array("conditions" => array('ApplicationMonitoringStatus.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 24 HOUR) ' ), 
-																	   "order" => "Latest_Check_Time desc" ) );
-		$this->set('jobResultData',  $jobResultData);
-		
-		if(isset($_POST['export']) && $_POST['export'] == 'export'){
-			$this->exportsheet($jobResultData, 'ApplicationMonitoringStatus');
-		}
-		
-	}
-	
-	function appconfigurations(){
 		$jobResultData = array();
 		$this->loadModel('ApplicationMonitoringConfig');
 		$conditions = array();
@@ -41,7 +28,8 @@ class ApplicationmonitorController extends AppController {
 			$optionsArray['conditions'] = $conditions;
 			if(isset($_POST['export']) && $_POST['export'] == 'export'){
 			}else{
-				$optionsArray['fields'] = array('Config_ID', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'Current_Status');
+				// Config_ID, Ports, Stop_Script, Current_Status, Webapp_Dir,Artifact,Instance_Path
+				$optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
 			}
 			$jobResultData = $this->ApplicationMonitoringConfig->find('all', $optionsArray ); //, array("order" => "Created_On desc" )
 			
@@ -57,6 +45,17 @@ class ApplicationmonitorController extends AppController {
 		
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
 			$this->exportsheet($jobResultData, 'ApplicationMonitoringConfig');
+		}
+	}
+	
+	function appconfigurations(){
+		$this->loadModel('ApplicationMonitoringStatus');
+		$jobResultData = $this->ApplicationMonitoringStatus->find('all', array("conditions" => array('ApplicationMonitoringStatus.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 24 HOUR) ' ), 
+																	   "order" => "Latest_Check_Time desc" ) );
+		$this->set('jobResultData',  $jobResultData);
+		
+		if(isset($_POST['export']) && $_POST['export'] == 'export'){
+			$this->exportsheet($jobResultData, 'ApplicationMonitoringStatus');
 		}
 	}
 
