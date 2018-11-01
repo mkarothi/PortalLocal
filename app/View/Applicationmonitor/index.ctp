@@ -71,7 +71,7 @@
 	<?php if($jobResultData){ ?>
 	  	<table class="table table-condensed table-responsive table-bordered">
 		 <thead><tr> 		
-		<?php foreach($jobResultData[0]['ApplicationMonitoringConfig'] as $columnName => $value){ ?>
+		<?php foreach($jobResultData[0]['ApplicationMonitoringStatus'] as $columnName => $value){ ?>
 	  		<th><?php echo $columnName;?></th>
 	  	<?php } ?>
 	  	<th>Action</th>
@@ -84,7 +84,7 @@
 		  	<?php 
 				  $configId = false;
 				  $isProd = 0;
-		  		foreach($jobResult['ApplicationMonitoringConfig'] as $columnName => $value){  ?>
+		  		foreach($jobResult['ApplicationMonitoringStatus'] as $columnName => $value){  ?>
 				  	<?php if($columnName == "Current_Status" && $value != '200-OK'){ ?> 
 						<td style="color:red"><strong><?php echo $value;?></strong></td>
 					<?php } else { ?>
@@ -123,7 +123,7 @@ $(document).ready(function(){
   	});
 
   	$('#restartApplication').click( function() {
-		$('#AppconfigurationsForm').attr('action', '/applicationmonitor/appconfigurations');
+		$('#AppconfigurationsForm').attr('action', '/applicationmonitor');
 		$("#AppconfigurationsForm").submit();
     });
 
