@@ -105,9 +105,15 @@ class OpsController extends AppController {
 			$batchJobStatusDetails['Job_Actual_End_Time'] = " NOW() ";
 
 			if($this->data['Ops']['action'] != 'ignore'){
-				$action = $this->data['Ops']['action']; //restart onhold onice
-				$jobName = $jobResultData['BatchJobsStatusData']['Job_Name'];
-				$serverName = $jobResultData['BatchJobsStatusData']['Server_Name'];
+
+				$this->loadModel('BatchJobsRework');
+				$this->BatchJobsRework->id = NULL;
+				$reworkDetails['Job_Entry'] = $jobResultData['BatchJobsStatusData']['Job_Entry'];
+				$reworkDetails['Job_Name'] = $jobResultData['BatchJobsStatusData']['Job_Name'];
+				$reworkDetails['Server_Name'] = $jobResultData['BatchJobsStatusData']['Server_Name'];
+				$reworkDetails['Rework_Type'] = $this->data['Ops']['action'];
+				$this->BatchJobsRework->save($reworkDetails);
+
 				// Write the script to invoke
 				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
 			}

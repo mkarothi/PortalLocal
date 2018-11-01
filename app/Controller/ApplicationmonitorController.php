@@ -29,7 +29,7 @@ class ApplicationmonitorController extends AppController {
 			if(isset($_POST['export']) && $_POST['export'] == 'export'){
 			}else{
 				// Config_ID, Ports, Stop_Script, Current_Status, Webapp_Dir,Artifact,Instance_Path
-				$optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
+				// $optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
 			}
 			$jobResultData = $this->ApplicationMonitoringStatus->find('all', $optionsArray ); //, array("order" => "Created_On desc" )
 			
@@ -51,8 +51,12 @@ class ApplicationmonitorController extends AppController {
 	function appconfigurations(){
 		// $this->loadModel('ApplicationMonitoringStatus');
 		$this->loadModel('ApplicationMonitoringConfig');
-		$jobResultData = $this->ApplicationMonitoringConfig->find('all', array("conditions" => array('ApplicationMonitoringConfig.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 24 HOUR) ' ), 
-																	   "order" => "Latest_Check_Time desc" ) );
+		$optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
+		$optionsArray['limit'] = 150;
+		$jobResultData = $this->ApplicationMonitoringConfig->find('all', $optionsArray );
+
+		// , array("conditions" => array('ApplicationMonitoringConfig.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 24 HOUR) ' ), 
+																	   // "order" => "Latest_Check_Time desc" )
 		$this->set('jobResultData',  $jobResultData);
 		
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
