@@ -88,7 +88,7 @@ $(document).ready(function(){
 	<?php echo $this->Form->create("Ops", array("method" => "POST", "action" => "/editjobstatus?jobEntry=$jobEntry", "id" => "jobUpdateForm" ) ); ?>
 	
 		<div class="col-sm-3 text-left">
-	    <h3><u>Setting Job Status to Ignore	</u?</h3>   
+	    <h3><u>Enforce Job Status </u?</h3>   
 	  </div>
 	
 	  <div class="form-group">
@@ -129,10 +129,10 @@ $(document).ready(function(){
 		    <?php echo $this->Form->input("who_requested", array("label"=> false, "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
 	  </div>
 	  
-	  <div class="form-group">    
+<!-- 	  <div class="form-group">    
 		    <label for="OpsIgnoreTime">How Long will be Ignored:</label> 
 		    <?php echo $this->Form->input("ignore_time", array("label"=> false, "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
-	  </div>
+	  </div> -->
 	  
 	  <div class="form-group">
 		    <label for="OpsWhy">Why:</label> 
