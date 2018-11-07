@@ -215,7 +215,7 @@ class ApplicationmonitorController extends AppController {
 							// $serverName - Name of the server
 							// $requestId - Name of the server
 							// $cmd - Command
-							// exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+							exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/TigerX.pl " .$requestId );
 						}
 					}
 				}
