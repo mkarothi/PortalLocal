@@ -85,7 +85,7 @@ class OpsController extends AppController {
 			
 			$this->BatchJobsStatusData->Job_Entry = $jobResultData['BatchJobsStatusData']['Job_Entry'];
 			
-			$batchJobStatusDetails['Job_Latest_Status'] = "'Ignore'";
+			$batchJobStatusDetails['Job_Latest_Status'] = "'".ucfirst($this->data['Ops']['action'])."'";
 			
 			#$batchJobStatusDetails['Job_Status_Comments'] = "'". $jobResultData['BatchJobsStatusData']['Job_Status_Comments'];
 			$batchJobStatusDetails['Job_Status_Comments'] = "'";
