@@ -10,7 +10,7 @@ class ApplicationmonitorController extends AppController {
 	
 	function index(){
 		$jobResultData = array();
-		$this->loadModel('ApplicationMonitoringStatus');
+		$this->loadModel('ApplicationMonitoringConfig');
 		$conditions = array();
 		$applicationFamily = 0;
 		$applicationName = 0;
@@ -31,7 +31,7 @@ class ApplicationmonitorController extends AppController {
 				// Config_ID, Ports, Stop_Script, Current_Status, Webapp_Dir,Artifact,Instance_Path
 				// $optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
 			}
-			$jobResultData = $this->ApplicationMonitoringStatus->find('all', $optionsArray ); //, array("order" => "Created_On desc" )
+			$jobResultData = $this->ApplicationMonitoringConfig->find('all', $optionsArray ); //, array("order" => "Created_On desc" )
 			
 			$this->set('fromSearch',  1);
 		}else{
@@ -51,7 +51,7 @@ class ApplicationmonitorController extends AppController {
 	function appconfigurations(){
 		// $this->loadModel('ApplicationMonitoringStatus');
 		$this->loadModel('ApplicationMonitoringConfig');
-		$optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
+		// $optionsArray['fields'] = array('Application_Family', 'Application_Name', 'Environment', 'Server_Name', 'Server_Role', 'SW_Running', 'Instance_Name', 'Account', 'Keep_Alive_URL', 'Restart_Script', 'DL_EMAILS', 'Deployment_File');
 		$optionsArray['limit'] = 150;
 		$jobResultData = $this->ApplicationMonitoringConfig->find('all', $optionsArray );
 

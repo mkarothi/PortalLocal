@@ -16,14 +16,18 @@
 	  	<table class="table table-condensed table-responsive table-bordered">
 		 <thead><tr> 		
 		<?php foreach($jobResultData[0]['ApplicationMonitoringConfig'] as $columnName => $value){ ?>
-	  		<th><?php echo $columnName;?></th>
+				<?php if($columnName == 'Current_Status'){ ?>
+				<?php } else { ?>
+					<th><?php echo $columnName;?></th>
+				<?php } ?>
 	  	<?php } ?>
 	  	</tr></thead>
 	  	<tbody id="myTable">
 	  	<?php foreach($jobResultData as $jobResult){ ?>
 	  		<tr>
 		  	<?php foreach($jobResult['ApplicationMonitoringConfig'] as $columnName => $value){ ?>
-		  		<?php if($columnName != 'Instance_Latest_Status'){ ?>
+		  		<?php if($columnName == 'Current_Status'){ ?>
+		  		<?php } else if($columnName != 'Instance_Latest_Status'){ ?>
 	  				<td><?php echo $value;?></td>
 		  		<?php } else { ?>
 		  			<?php if($value == 'Success'){
