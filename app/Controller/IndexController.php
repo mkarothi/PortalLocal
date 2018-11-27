@@ -28,10 +28,10 @@ class IndexController extends AppController {
             $message = $this->data['message'];
     
             $final_message = "Mr./Mrs.  $username (Phone Number : $phone) has an inquiry about portal for the page : $websiteURL \n \n $message \n"; 
-            $to= 'SKarothi@dtcc.com';
+            $to= 'SatyaMurthy.Karothi@dexmedia.com';
             $subject = 'Portal Inquirty';
             $headers =  'CC: ' . $email . "\r\n";
-                    'Reply-To: SKarothi@dtcc.com'. "\r\n"; 
+                    'Reply-To: SatyaMurthy.Karothi@dexmedia.com'. "\r\n"; 
                     'Mime-Version: 1.0' . "\r\n";
                     'Content-type: text/hotml; charset=iso-8859-1' . "\r\n";
                     'X-Mailer: PHP/' . phpversion();
@@ -73,10 +73,10 @@ class IndexController extends AppController {
             $message = $this->data['message'];
     
             $final_message = "Mr./Mrs.  $username (Phone Number : $phone) has an inquiry about portal for the page : $websiteURL \n \n $message \n"; 
-            $to= 'SKarothi@dtcc.com';
+            $to= 'Murthy.Karothi@aig.com';
             $subject = 'Portal Inquirty';
             $headers =  'CC: ' . $email . "\r\n";
-                    'Reply-To: SKarothi@dtcc.com'. "\r\n"; 
+                    'Reply-To: Murthy.Karothi@aig.com'. "\r\n"; 
                     'Mime-Version: 1.0' . "\r\n";
                     'Content-type: text/hotml; charset=iso-8859-1' . "\r\n";
                     'X-Mailer: PHP/' . phpversion();
