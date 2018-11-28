@@ -85,7 +85,7 @@
 				  $configId = false;
 				  $isProd = 0;
 		  		foreach($jobResult['ApplicationMonitoringConfig'] as $columnName => $value){  ?>
-				  	<?php if($columnName == "Current_Status" && $value != '200-OK'){ ?> 
+				  	<?php if ( ($columnName == "Current_Status") && (strpos($value,'200-OK') === false)) { ?> 
 						<td style="color:red"><strong><?php echo $value;?></strong></td>
 					<?php } else { ?>
   					<td><?php echo $value;?></td>
