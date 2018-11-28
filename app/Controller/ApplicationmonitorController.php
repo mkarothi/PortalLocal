@@ -6,6 +6,7 @@ class ApplicationmonitorController extends AppController {
 
 	function beforeFilter(){
 		$this->layout = "applicationmonitor";
+		Configure::write('debug', 2);
 	}
 	
 	function index(){
@@ -89,6 +90,7 @@ class ApplicationmonitorController extends AppController {
 					$deploymentdetails['Environment'] = $jobResult['ApplicationMonitoringConfig']['Environment'];
 					$deploymentdetails['Server_Name'] = $jobResult['ApplicationMonitoringConfig']['Server_Name'];
 					$deploymentdetails['Instance_Name'] = $jobResult['ApplicationMonitoringConfig']['Instance_Name'];
+					$deploymentdetails['Account'] = $jobResult['ApplicationMonitoringConfig']['Account'];
 					$deploymentdetails['Deployment_File'] = $jobResult['ApplicationMonitoringConfig']['Deployment_File'];
 					$deploymentdetails['Request_ID'] = $requestId;
 					$this->ApplicationDeploymentfileStatus->save($deploymentdetails);
@@ -97,14 +99,15 @@ class ApplicationmonitorController extends AppController {
 
 				#$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
 
-				$appName= $jobResult['ApplicationMonitoringConfig']['Application_Name'];
+				#$appFamily= $jobResult['ApplicationMonitoringConfig']['Application_Family'];
+				#$appName= $jobResult['ApplicationMonitoringConfig']['Application_Name'];
 				$env = $jobResult['ApplicationMonitoringConfig']['Environment'];
 				if(strrpos($env, "prod") !== false){
 					// Prod environment
-					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId );
 				}else{
 					// Other environments
-					 exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId . " " .$appName . " ".$env );
+					exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/VerifyDeploymentFile.pl " .$requestId );
 				}
 				sleep(5);
 				$deploymentRequests = $this->ApplicationDeploymentfileStatus->find("all", array("conditions" => array("Request_ID" => $requestId)));
@@ -215,6 +218,7 @@ class ApplicationmonitorController extends AppController {
 							// $serverName - Name of the server
 							// $requestId - Name of the server
 							// $cmd - Command
+							#exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.32 /spfs/tomcat/Automation_Work/Traige-Automation/bin/TigerX.pl " .$requestId );
 							exec("echo y | C:\\PSTools\\plink.exe -pw cat34968 ssatomcat@158.95.121.30 /spfs/tomcat/Automation_Work/Traige-Automation/bin/TigerX.pl " .$requestId );
 						}
 					}
