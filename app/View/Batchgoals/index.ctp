@@ -81,7 +81,7 @@
 		  		<?php if($columnName == 'Job_Entry'){ ?>
 		  			<td>
 		  				<?php if($batchGoalResult['BatchGoalStatusData']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
-            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/ops/editjobstatus?jobEntry=<?php echo $batchGoalResult['BatchGoalStatusData']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
+            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/batchgoals/editbatchgoalexceptions?jobEntry=<?php echo $batchGoalResult['BatchGoalStatusData']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
 	  					<?php }else{ ?> 	
 		  					<?php echo $value;?>
 		  				<?php } ?>
