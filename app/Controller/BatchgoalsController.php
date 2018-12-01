@@ -48,19 +48,18 @@ class BatchgoalsController extends AppController {
 		$statusUpdated = false;
 		$this->loadModel('BatchGoalStatusData');
 		$conditions = array('BatchGoalStatusData.Job_Entry' => $_REQUEST['jobEntry']);
-		$jobResultData = $this->BatchGoalStatusData->find('first', array("conditions" => $conditions, 
-																	     "order" => "Latest_Check_Time desc" ) );
+		$jobResultData = $this->BatchGoalStatusData->find('first', array("conditions" => $conditions, "order" => "Latest_Check_Time desc" ) );
+		$this->loadModel('BatchGoalExceptions');
+		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $_REQUEST['jobEntry'])) );
+		debug($this->data);
 		if(!empty($this->data)){
 			
-			$this->BatchJobsStatusData->Job_Entry = $jobResultData['BatchGoalStatusData']['Job_Entry'];
+			$this->BatchGoalExceptions->Job_Entry = $jobResultData['BatchGoalStatusData']['Job_Entry'];
 			
 			$batchJobStatusDetails['Job_Latest_Status'] = "'".ucfirst($this->data['Ops']['action'])."'";
 			
 			#$batchJobStatusDetails['Job_Status_Comments'] = "'". $jobResultData['BatchGoalStatusData']['Job_Status_Comments'];
-			$batchJobStatusDetails['Job_Status_Comments'] = "'";
-			if($this->data['Ops']['updated_by']){
-				$batchJobStatusDetails['Job_Status_Comments'] .= "\n Updated By: " . $this->data['Ops']['updated_by'];
-			}
+			/* $batchJobStatusDetails['Job_Status_Comments'] = "'";
 			if($this->data['Ops']['who_requested']){
 				$batchJobStatusDetails['Job_Status_Comments'] .= ", \n Who Requested: " . $this->data['Ops']['who_requested'];
 			}
@@ -72,23 +71,18 @@ class BatchgoalsController extends AppController {
 			}
 			$batchJobStatusDetails['Job_Status_Comments'] .= "'";
 			$batchJobStatusDetails['Job_Actual_End_Time'] = " NOW() ";
-
+			*/
 			if($this->data['Ops']['action'] != 'ignore'){
 
-				$this->loadModel('BatchJobsRework');
-				$this->BatchJobsRework->id = NULL;
-				$reworkDetails['Job_Entry'] = $jobResultData['BatchJobsStatusData']['Job_Entry'];
-				$reworkDetails['Job_Name'] = $jobResultData['BatchJobsStatusData']['Job_Name'];
-				$reworkDetails['Server_Name'] = $jobResultData['BatchJobsStatusData']['Server_Name'];
+				$this->loadModel('BatchGoalStatusData');
+				$this->BatchGoalExceptions->id = NULL;
+				$reworkDetails['Job_Entry'] = $jobResultData['BatchGoalStatusData']['Job_Entry'];
+				$reworkDetails['Engineer_Name'] = $this->data['updated_by'];
 				$reworkDetails['Rework_Type'] = $this->data['Ops']['action'];
-				$this->BatchJobsRework->save($reworkDetails);
+				$this->BatchGoalExceptions->save($reworkDetails);
 
 				// Write the script to invoke
 				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
-			}
-			
-			if($this->BatchJobsStatusData->UpdateAll($batchJobStatusDetails, $conditions)){
-				$statusUpdated = true;
 			}
 		}
 		$this->set("statusUpdated", $statusUpdated);

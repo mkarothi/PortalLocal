@@ -85,7 +85,7 @@ $(document).ready(function(){
 </script>
 <div class="col-sm-3 text-left">
 	
-	<?php echo $this->Form->create(false, array("method" => "POST", "url" => "/editbatchgoalexceptions?jobEntry=$jobEntry", "id" => "BatchgoalForm" ) ); ?>
+	<?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions?jobEntry=$jobEntry", "id" => "BatchgoalForm" ) ); ?>
 	
 		<div class="col-sm-3 text-left">
 	    <h3><u>Enforce Job Status </u?</h3>   
