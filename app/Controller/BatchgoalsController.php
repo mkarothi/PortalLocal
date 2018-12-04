@@ -52,39 +52,32 @@ class BatchgoalsController extends AppController {
 		$this->loadModel('BatchGoalExceptions');
 		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $_REQUEST['jobEntry'])) );
 		debug($this->data);
+		debug($batchGoalExceptionData);
 		if(!empty($this->data)){
 			
 			$this->BatchGoalExceptions->Job_Entry = $jobResultData['BatchGoalStatusData']['Job_Entry'];
 			
-			$batchJobStatusDetails['Job_Latest_Status'] = "'".ucfirst($this->data['Ops']['action'])."'";
+			$batchJobStatusDetails['Job_Latest_Status'] = "'".ucfirst($this->data['action'])."'";
 			
-			#$batchJobStatusDetails['Job_Status_Comments'] = "'". $jobResultData['BatchGoalStatusData']['Job_Status_Comments'];
-			/* $batchJobStatusDetails['Job_Status_Comments'] = "'";
-			if($this->data['Ops']['who_requested']){
-				$batchJobStatusDetails['Job_Status_Comments'] .= ", \n Who Requested: " . $this->data['Ops']['who_requested'];
-			}
-			if($this->data['Ops']['ignore_time']){
-				$batchJobStatusDetails['Job_Status_Comments'] .= ", \n Ignore Duration: " . $this->data['Ops']['ignore_time'];
-			}
-			if($this->data['Ops']['why']){
-				$batchJobStatusDetails['Job_Status_Comments'] .= ", \n Why: " . $this->data['Ops']['why'];
-			}
-			$batchJobStatusDetails['Job_Status_Comments'] .= "'";
-			$batchJobStatusDetails['Job_Actual_End_Time'] = " NOW() ";
-			*/
-			if($this->data['Ops']['action'] != 'ignore'){
+			if($this->data['action'] != 'ignore'){
 
 				$this->loadModel('BatchGoalStatusData');
-				$this->BatchGoalExceptions->id = NULL;
+				if($batchGoalExceptionData){
+					$this->BatchGoalExceptions->Job_Entry = $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry'];
+				}
 				$reworkDetails['Job_Entry'] = $jobResultData['BatchGoalStatusData']['Job_Entry'];
 				$reworkDetails['Engineer_Name'] = $this->data['updated_by'];
-				$reworkDetails['Rework_Type'] = $this->data['Ops']['action'];
+				$reworkDetails['Why_Exception'] = $this->data['why'];
+				$reworkDetails['ETA'] = $this->data['eta'];
+				$reworkDetails['Comment'] = $this->data['comments'];
+				$reworkDetails['Rework_Type'] = $this->data['action'];
 				$this->BatchGoalExceptions->save($reworkDetails);
 
 				// Write the script to invoke
 				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
 			}
 		}
+		$this->set("batchGoalExceptionData", $batchGoalExceptionData);
 		$this->set("statusUpdated", $statusUpdated);
 		$this->set('jobEntry',  $_REQUEST['jobEntry']);
 		$this->set('jobResultData',  $jobResultData);
