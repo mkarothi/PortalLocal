@@ -135,6 +135,22 @@ $(document).ready(function(){
 		    <?php echo $this->Form->input("comments", array("label"=> "Comments :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
 	  </div>
     
+
+    <div class="form-group">
+		    <?php echo $this->Form->input("jirauserid", array("label"=> "Jira User Id :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+	  </div>
+
+    <div class="form-group">
+		    <?php echo $this->Form->input("jirapassword", array("label"=> "Jira Password :", "type" => "password", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+	  </div>
+
+    <div class="form-group">
+		    <?php echo $this->Form->input("jirasummary", array("label"=> "Jira Summary :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+	  </div>
+
+    <div class="form-group">
+		    <?php echo $this->Form->input("jiradescription", array("label"=> "Jira Description :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+	  </div>
 	  
 <!-- 	  <div class="form-group">    
 		    <label for="OpsIgnoreTime">How Long will be Ignored:</label> 
@@ -150,8 +166,8 @@ $(document).ready(function(){
     <div class="form-group">
       <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
       <?php if($batchGoalExceptionData){ ?>
-      <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
-      <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
+        <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
+        <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
       <?php }?>
     </div>
 	<?php echo $this->Form->end();?>

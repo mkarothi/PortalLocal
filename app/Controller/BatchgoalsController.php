@@ -46,12 +46,14 @@ class BatchgoalsController extends AppController {
 	function editbatchgoalexceptions($jobEntry = ''){
 		$this->layout = false;
 		$statusUpdated = false;
+		$batchGoalId = 0;
 		$this->loadModel('BatchGoalStatusData');
 		$conditions = array('BatchGoalStatusData.Job_Entry' => $_REQUEST['jobEntry']);
 		$jobResultData = $this->BatchGoalStatusData->find('first', array("conditions" => $conditions, "order" => "Latest_Check_Time desc" ) );
 		$this->loadModel('BatchGoalExceptions');
 		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $_REQUEST['jobEntry'])) );
 		// debug($this->data);
+		$raiseJiraTicket = false;
 		// debug($batchGoalExceptionData);
 		if(!empty($this->data)){
 			
@@ -63,7 +65,7 @@ class BatchgoalsController extends AppController {
 
 				$this->loadModel('BatchGoalStatusData');
 				if($batchGoalExceptionData){
-					$this->BatchGoalExceptions->id = $batchGoalExceptionData['BatchGoalExceptions']['id'];
+					$batchGoalId = $this->BatchGoalExceptions->id = $batchGoalExceptionData['BatchGoalExceptions']['id'];
 				}else{
 					$this->BatchGoalExceptions->id = NULL;
 				}
@@ -73,7 +75,23 @@ class BatchgoalsController extends AppController {
 				$reworkDetails['ETA'] = $this->data['eta'];
 				$reworkDetails['Comment'] = $this->data['comments'];
 				$reworkDetails['Rework_Type'] = $this->data['action'];
+
+				if($raiseJiraTicket){
+
+					$reworkDetails['Jira_UserID'] = $this->data['jirauserid'];
+					$reworkDetails['Jira_Password'] = $this->data['jirapassword'];
+					$reworkDetails['Jira_Summary'] = $this->data['jirasummary'];
+					$reworkDetails['Jira_Description'] = $this->data['jiradescription'];
+
+				}
+				
 				$this->BatchGoalExceptions->save($reworkDetails);
+				if(!$batchGoalId){
+					$batchGoalId = $this->BatchGoalExceptions->getLastInsertID();
+					if($raiseJiraTicket){
+						$this->__createJiraTicket($batchGoalId);
+					}
+				}
 				// Write the script to invoke
 				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
 			}
@@ -84,7 +102,7 @@ class BatchgoalsController extends AppController {
 		$this->set('jobResultData',  $jobResultData);
 	}
 	
-	function createjiraticket($goalExceptionId){
+	function __createJiraTicket($goalExceptionId){
 		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $goalExceptionId)) );
 
 		$base64_usrpwd = base64_encode($batchGoalExceptionData['BatchGoalExceptions']['Jira_UserID'].':'.$batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']);
