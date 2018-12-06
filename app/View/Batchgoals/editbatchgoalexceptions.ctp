@@ -80,18 +80,19 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="container-fluid text-left">    
-  <div class="row content">
-
+<div class="container text-left">    
+  
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#home">Enforce Job Status</a></li>
+      <?php if($batchGoalExceptionData){ ?>
       <li><a data-toggle="tab" href="#menu1">Jira incident</a></li>
       <li><a data-toggle="tab" href="#menu2">Email Preview</a></li>
+      <?php } ?>
     </ul>
 
     <div class="tab-content">
-      <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions?jobEntry=$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
-      <div id="home" class="tab-pane fade in active text-left">
+      <div id="home" class="tab-pane fade in active">
+        <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions?jobEntry=$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
         <h3><u>Enforce Job Status </u></h3>
         <div>
             <label >Job Entry:</label> 
@@ -135,7 +136,7 @@ $(document).ready(function(){
                                                         'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
         </div>
       </div>
-      <div id="menu1" class="tab-pane fade text-left">
+      <div id="menu1" class="tab-pane fade">
         <h3>Jira Ticket Details</h3>
         <div>
             <label >Job Entry:</label> 
@@ -171,8 +172,8 @@ $(document).ready(function(){
             <label >Job Name:</label> 
             <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
         </div>
+        <?php echo $this->Form->end();?>
       </div>
-      <?php echo $this->Form->end();?>
       <div class="form-group">
         <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
         <?php if($batchGoalExceptionData){ ?>
@@ -182,18 +183,6 @@ $(document).ready(function(){
       </div>
     </div>
 
-    <div class="tab-content">
-
-
-    <div class=" text-left">
-      
-      
-        
-    </div>
-    </div>
-    
-   
-  </div>
 </div>
 
 </body>
