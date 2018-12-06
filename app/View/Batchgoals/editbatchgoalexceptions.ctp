@@ -80,7 +80,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="container-fluid text-center">    
+<div class="container-fluid text-left">    
   <div class="row content">
 
     <ul class="nav nav-tabs">
@@ -137,6 +137,14 @@ $(document).ready(function(){
       </div>
       <div id="menu1" class="tab-pane fade text-left">
         <h3>Jira Ticket Details</h3>
+        <div>
+            <label >Job Entry:</label> 
+            <?php echo $jobResultData['BatchGoalStatusData']['Job_Entry']; ?>
+        </div>
+        <div>
+            <label >Job Name:</label> 
+            <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
+        </div>
         <div class="form-group">
             <?php echo $this->Form->input("jirauserid", array("label"=> "Jira User Id :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
@@ -154,8 +162,15 @@ $(document).ready(function(){
         </div>
       </div>
       <div id="menu2" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
+        <h3>Email Preview</h3>
+        <div>
+            <label >Job Entry:</label> 
+            <?php echo $jobResultData['BatchGoalStatusData']['Job_Entry']; ?>
+        </div>
+        <div>
+            <label >Job Name:</label> 
+            <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
+        </div>
       </div>
       <?php echo $this->Form->end();?>
       <div class="form-group">
