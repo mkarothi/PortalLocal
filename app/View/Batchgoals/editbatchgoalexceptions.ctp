@@ -92,7 +92,7 @@ $(document).ready(function(){
 
     <div class="tab-content">
       <div id="home" class="tab-pane fade in active">
-        <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions?jobEntry=$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
+        <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions/$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
         <h3><u>Enforce Job Status </u></h3>
         <div>
             <label >Job Entry:</label> 
@@ -119,20 +119,20 @@ $(document).ready(function(){
             <?php echo $jobResultData['BatchGoalStatusData']['Job_Actual_End_Time']; ?>
         </div>
         <div class="form-group">
-          <?php echo $this->Form->input("updated_by", array("label"=> 'Your Name:', "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+          <?php echo $this->Form->input("updated_by", array("label"=> 'Your Name:', "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Engineer_Name']))? $batchGoalExceptionData['BatchGoalExceptions']['Engineer_Name'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
         <label class="form-group">Details:</label> 
         <div class="form-group">
-            <?php echo $this->Form->input("why", array("label"=> 'Why :', "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("why", array("label"=> 'Why :', "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Why_Exception']))? $batchGoalExceptionData['BatchGoalExceptions']['Why_Exception'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
         <div class="form-group">
-            <?php echo $this->Form->input("eta", array("label"=> 'ETA :', "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("eta", array("label"=> 'ETA :', "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['ETA']))? $batchGoalExceptionData['BatchGoalExceptions']['ETA'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
         <div class="form-group">
-            <?php echo $this->Form->input("comments", array("label"=> "Comments :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("comments", array("label"=> "Comments :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Comment']))? $batchGoalExceptionData['BatchGoalExceptions']['Comment'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
         <div class="form-group">
-            <?php echo $this->Form->input("action",array('label'=>'Re_Work:', 'class'=> 'form-control required', 'options' => array('none' => 'None', 'ignore' => 'Ignore',
+            <?php echo $this->Form->input("action",array('label'=>'Re_Work:', "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Rework_Type']))? $batchGoalExceptionData['BatchGoalExceptions']['Rework_Type'] :"", 'class'=> 'form-control required', 'options' => array('none' => 'None', 'ignore' => 'Ignore',
                                                         'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
         </div>
       </div>
@@ -147,19 +147,19 @@ $(document).ready(function(){
             <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
         </div>
         <div class="form-group">
-            <?php echo $this->Form->input("jirauserid", array("label"=> "Jira User Id :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("jirauserid", array("label"=> "Jira User Id :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_UserID']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_UserID'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
 
         <div class="form-group">
-            <?php echo $this->Form->input("jirapassword", array("label"=> "Jira Password :", "type" => "password", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("jirapassword", array("label"=> "Jira Password :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Password'] :"", "type" => "password", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
 
         <div class="form-group">
-            <?php echo $this->Form->input("jirasummary", array("label"=> "Jira Summary :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("jirasummary", array("label"=> "Jira Summary :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Summary']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Summary'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
 
         <div class="form-group">
-            <?php echo $this->Form->input("jiradescription", array("label"=> "Jira Description :", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("jiradescription", array("label"=> "Jira Description :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
       </div>
       <div id="menu2" class="tab-pane fade">
@@ -172,22 +172,36 @@ $(document).ready(function(){
             <label >Job Name:</label> 
             <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
         </div>
-        <?php echo $this->Form->end();?>
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
         <?php if($batchGoalExceptionData){ ?>
-          <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
-          <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
-        <?php }?>
+            <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
+            <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
+        <?php } ?>
+        <?php echo $this->Form->end();?>
       </div>
     </div>
 
 </div>
 
+<script>
+$(document).ready(function(){
+    <?php if($batchGoalExceptionData){ ?>
+        $('#raiseJira').click( function() {
+            $('#BatchgoalForm').attr('action', '/batchgoals/createJiraTicket/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
+            $("#BatchgoalForm").submit();
+        });
+        $('#emailPreview').click( function() {
+            $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
+            $("#BatchgoalForm").submit();
+        });
+    <?php }?>
+});
+
+</script>
 </body>
 </html>
-
 
 <?php } else{ ?>
 	

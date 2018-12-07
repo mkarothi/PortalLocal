@@ -43,20 +43,20 @@ class BatchgoalsController extends AppController {
 		}
 	}
 
-	function editbatchgoalexceptions($jobEntry = ''){
+	function editbatchgoalexceptions($jobEntry){
 		$this->layout = false;
 		$statusUpdated = false;
 		$batchGoalId = 0;
 		$this->loadModel('BatchGoalStatusData');
-		$conditions = array('BatchGoalStatusData.Job_Entry' => $_REQUEST['jobEntry']);
+		$conditions = array('BatchGoalStatusData.Job_Entry' => $jobEntry);
 		$jobResultData = $this->BatchGoalStatusData->find('first', array("conditions" => $conditions, "order" => "Latest_Check_Time desc" ) );
 		$this->loadModel('BatchGoalExceptions');
-		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $_REQUEST['jobEntry'])) );
 		// debug($this->data);
 		$raiseJiraTicket = false;
 		// debug($batchGoalExceptionData);
 		if(!empty($this->data)){
 			
+			$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $jobEntry)) );
 			$this->BatchGoalExceptions->Job_Entry = $jobResultData['BatchGoalStatusData']['Job_Entry'];
 			
 			$batchJobStatusDetails['Job_Latest_Status'] = "'".ucfirst($this->data['action'])."'";
@@ -75,66 +75,84 @@ class BatchgoalsController extends AppController {
 				$reworkDetails['ETA'] = $this->data['eta'];
 				$reworkDetails['Comment'] = $this->data['comments'];
 				$reworkDetails['Rework_Type'] = $this->data['action'];
-
-				if($raiseJiraTicket){
-
-					$reworkDetails['Jira_UserID'] = $this->data['jirauserid'];
-					$reworkDetails['Jira_Password'] = $this->data['jirapassword'];
-					$reworkDetails['Jira_Summary'] = $this->data['jirasummary'];
-					$reworkDetails['Jira_Description'] = $this->data['jiradescription'];
-
-				}
 				
 				$this->BatchGoalExceptions->save($reworkDetails);
 				if(!$batchGoalId){
 					$batchGoalId = $this->BatchGoalExceptions->getLastInsertID();
-					if($raiseJiraTicket){
-						$this->__createJiraTicket($batchGoalId);
-					}
 				}
 				// Write the script to invoke
 				// exec(" <COMMAND> " .$requestId . " " .$appName . " ".$action );
 			}
 		}
+		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $jobEntry)) );
 		$this->set("batchGoalExceptionData", $batchGoalExceptionData);
 		$this->set("statusUpdated", $statusUpdated);
-		$this->set('jobEntry',  $_REQUEST['jobEntry']);
+		$this->set('jobEntry', $jobEntry);
 		$this->set('jobResultData',  $jobResultData);
 	}
 	
-	function __createJiraTicket($goalExceptionId){
-		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $goalExceptionId)) );
+	function createJiraTicket($exceptionId){
+		$this->autoRender = false;
+		$this->loadModel('BatchGoalExceptions');
+		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $exceptionId)) );
+		if(!empty($this->data)){
+			$this->BatchGoalExceptions->id = $exceptionId;
+			$reworkDetails['Jira_UserID'] = $this->data['jirauserid'];
+			$reworkDetails['Jira_Password'] = $this->data['jirapassword'];
+			$reworkDetails['Jira_Summary'] = $this->data['jirasummary'];
+			$reworkDetails['Jira_Description'] = $this->data['jiradescription'];
+			$this->BatchGoalExceptions->save($reworkDetails);
 
-		$base64_usrpwd = base64_encode($batchGoalExceptionData['BatchGoalExceptions']['Jira_UserID'].':'.$batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']);
+			if(!$batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']){
 	
-		$ch = curl_init();
-		#curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/rest/api/2/issue/');
-		curl_setopt($ch, CURLOPT_URL, 'https://jira.dexyp.com/rest/api/2/issue/');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Basic '.$base64_usrpwd)); 
+				$base64_usrpwd = base64_encode($batchGoalExceptionData['BatchGoalExceptions']['Jira_UserID'].':'.$batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']);
+			
+				$ch = curl_init();
+				#curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/rest/api/2/issue/');
+				curl_setopt($ch, CURLOPT_URL, 'https://jira.dexyp.com/rest/api/2/issue/');
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Basic '.$base64_usrpwd)); 
+				// curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+				// curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+				
+				$arr['project'] = array( 'key' => 'DexYP Incident/Service (DEXYP)');
+				$arr['summary'] = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Summary'];
+				$arr['description'] = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'];
+				#$arr['issuetype'] = array( 'name' => $_POST['type']);
+				$arr['issuetype'] = array( 'name' => 'Incident');
+				
+				$json_arr['fields'] = $arr;
+				
+				$json_string = json_encode ($json_arr);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,$json_string);
+				$result = curl_exec($ch);
+				$curlInfo = curl_getinfo($ch);
+				$error = curl_error($ch);
+				if($error){
+					$this->log("createJiraTicket::requestUrl:error ". $error );
+				}
+				$this->log($curlInfo);
+				curl_close($ch);
 		
-		$arr['project'] = array( 'key' => 'DexYP Incident/Service (DEXYP)');
-		$arr['summary'] = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Summary'];
-		$arr['description'] = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'];
-		#$arr['issuetype'] = array( 'name' => $_POST['type']);
-		$arr['issuetype'] = array( 'name' => 'Incident');
-		
-		$json_arr['fields'] = $arr;
-		
-		$json_string = json_encode ($json_arr);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,$json_string);
-		$result = curl_exec($ch);
-		curl_close($ch);
-
-		if($result){
-			$this->BatchGoalExceptions->id = $batchGoalExceptionData['BatchGoalExceptions']['id'];
-			$curlResult['Jira_RequestID'] = $result;
-			$this->log("goalExceptionId: " . $goalExceptionId);
-			$this->log($curlResult);
-			$this->BatchGoalExceptions->save($curlResult);
+				if($result){
+					$this->BatchGoalExceptions->id = $batchGoalExceptionData['BatchGoalExceptions']['id'];
+					$curlResult['Jira_RequestID'] = $result;
+					$this->log("goalExceptionId: " . $exceptionId);
+					$this->log($curlResult);
+					$this->BatchGoalExceptions->save($curlResult);
+					$this->setFlash("Ticket created succesfully");
+				}
+			}else{
+				$this->setFlash("ticket already submitted - " . $batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']);
+			}
 		}
-		echo $result;
+		$this->redirect("/batchgoals/editbatchgoalexceptions/". $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']);
+
+	}
+
+	function emailPreview(){
+
 	}
 	
   
