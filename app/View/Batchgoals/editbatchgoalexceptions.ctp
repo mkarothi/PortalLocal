@@ -91,7 +91,12 @@ $(document).ready(function(){
     </ul>
 
     <div class="tab-content">
-      <div id="home" class="tab-pane fade in active">
+        <br>
+        <div class="col-sm-10 text-left alert-danger">
+            <?php echo $this->Session->flash(); ?>
+        </div>
+        <br>
+        <div id="home" class="tab-pane fade in active">
         <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions/$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
         <h3><u>Enforce Job Status </u></h3>
         <div>
@@ -136,6 +141,7 @@ $(document).ready(function(){
                                                         'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
         </div>
       </div>
+      <?php if($batchGoalExceptionData){ ?>
       <div id="menu1" class="tab-pane fade">
         <h3>Jira Ticket Details</h3>
         <div>
@@ -172,7 +178,24 @@ $(document).ready(function(){
             <label >Job Name:</label> 
             <?php echo $jobResultData['BatchGoalStatusData']['Job_Name']; ?>
         </div>
+
+        <div>
+            <label >To Address:</label> 
+            <?php echo $batchGoalScheduleData['BatchGoalSchedule']['Email_DL']; ?>
+        </div>
+
+        <div>
+            <label >Subject:</label> 
+            <?php echo $batchGoalScheduleData['BatchGoalSchedule']['Job_ID']; ?> is in < Status > now, and Expected to finish in <?php echo $batchGoalExceptionData['BatchGoalExceptions']['ETA'] ;?>
+        </div>
+
+        <div>
+            <label >Email Body:</label> 
+            <?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?>
+        </div>
+
       </div>
+      <?php } ?>
       <div class="form-group">
         <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
         <?php if($batchGoalExceptionData){ ?>

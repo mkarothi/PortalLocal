@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 class BatchgoalsController extends AppController {
 	
 	// var $uses = array();
-	
+	var $helpers    = array('Session');
 	function beforeFilter(){
 		$this->layout = "batchgoals";
 	}
@@ -46,6 +46,7 @@ class BatchgoalsController extends AppController {
 	function editbatchgoalexceptions($jobEntry){
 		$this->layout = false;
 		$statusUpdated = false;
+		$batchGoalScheduleData = false;
 		$batchGoalId = 0;
 		$this->loadModel('BatchGoalStatusData');
 		$conditions = array('BatchGoalStatusData.Job_Entry' => $jobEntry);
@@ -85,6 +86,13 @@ class BatchgoalsController extends AppController {
 			}
 		}
 		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.Job_Entry' => $jobEntry)) );
+
+		if($batchGoalExceptionData){
+			$this->loadModel('BatchGoalSchedule');
+			$batchGoalScheduleData = $this->BatchGoalSchedule->find("first", array("conditions" => array("BatchGoalSchedule.Job_ID" => $jobEntry) ));
+			// debug($batchGoalScheduleData);
+		}
+		$this->set("batchGoalScheduleData", $batchGoalScheduleData);
 		$this->set("batchGoalExceptionData", $batchGoalExceptionData);
 		$this->set("statusUpdated", $statusUpdated);
 		$this->set('jobEntry', $jobEntry);
@@ -141,18 +149,41 @@ class BatchgoalsController extends AppController {
 					$this->log("goalExceptionId: " . $exceptionId);
 					$this->log($curlResult);
 					$this->BatchGoalExceptions->save($curlResult);
-					$this->setFlash("Ticket created succesfully");
+					$this->Session->setFlash("Ticket created succesfully");
 				}
 			}else{
-				$this->setFlash("ticket already submitted - " . $batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']);
+				$this->Session->setFlash("ticket already submitted - " . $batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']);
 			}
 		}
 		$this->redirect("/batchgoals/editbatchgoalexceptions/". $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']);
 
 	}
 
-	function emailPreview(){
-
+	function emailPreview($exceptionId){
+		$this->autoRender = false;
+		$this->loadModel('BatchGoalExceptions');
+		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $exceptionId)) );
+		if(!empty($this->data)){
+			if($batchGoalExceptionData){
+				$this->loadModel('BatchGoalSchedule');
+				$batchGoalScheduleData = $this->BatchGoalSchedule->find("first", array("conditions" => array("BatchGoalSchedule.Job_ID" => $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']) ));
+			}
+			$final_message = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'] ; //"Mr./Mrs.  $username (Phone Number : $phone) has an inquiry about portal for the page : $websiteURL \n \n $message \n"; 
+			$email = $to= 'SatyaMurthy.Karothi@dexmedia.com';
+			$subject = $batchGoalScheduleData['BatchGoalSchedule']['Job_ID'] . "is in < Status > now, and Expected to finish in " . $batchGoalExceptionData['BatchGoalExceptions']['ETA'];
+			$headers =  'CC: ' . $email . "\r\n";
+					'Reply-To: SatyaMurthy.Karothi@dexmedia.com'. "\r\n"; 
+					'Mime-Version: 1.0' . "\r\n";
+					'Content-type: text/hotml; charset=iso-8859-1' . "\r\n";
+					'X-Mailer: PHP/' . phpversion();
+			if(mail($to, $subject, $final_message, $headers)){
+				$this->Session->setFlash("Email Message sent successfully !");
+			} else {
+				$emailSuccess = false;
+				$this->Session->setFlash("Email Message sent Failed!. Please try again.");
+			}
+		}
+		$this->redirect("/batchgoals/editbatchgoalexceptions/". $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']);
 	}
 	
   
