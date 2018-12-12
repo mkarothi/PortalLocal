@@ -46,8 +46,15 @@
 <body>
     
 <?php echo $this->Html->script('jquery/plugins/jquery.validate.js?v=1', array('inline' => true)); ?>
+<?php echo $this->Html->script('jquery/jquery.jeditable.js', array('inline' => false)); ?>
 <script>
 $(document).ready(function(){
+
+    $(".editable_textarea").editable("save.php", {
+        type   : 'textarea',
+        submit : 'OK',
+        cancel : 'Nope'
+    });
 	
 	var validator = $("#jobUpdateForm").validate({
         rules: {
