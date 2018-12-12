@@ -46,16 +46,10 @@
 <body>
     
 <?php echo $this->Html->script('jquery/plugins/jquery.validate.js?v=1', array('inline' => true)); ?>
-<?php echo $this->Html->script('jquery/jquery.jeditable.js', array('inline' => false)); ?>
+<?php echo $this->Html->script('jquery/jquery.editable.min.js', array('inline' => true)); ?>
 <script>
 $(document).ready(function(){
 
-    $(".editable_textarea").editable("save.php", {
-        type   : 'textarea',
-        submit : 'OK',
-        cancel : 'Nope'
-    });
-	
 	var validator = $("#jobUpdateForm").validate({
         rules: {
             "data[Ops][updated_by]":{
@@ -98,11 +92,12 @@ $(document).ready(function(){
     </ul>
 
     <div class="tab-content">
+        <?php if($this->Session->flash()){ ?>
         <br>
         <div class="col-sm-10 text-left alert-danger">
             <?php echo $this->Session->flash(); ?>
         </div>
-        <br>
+        <?php } ?>
         <div id="home" class="tab-pane fade in active">
         <?php echo $this->Form->create(false, array("method" => "POST", "url" => "/batchgoals/editbatchgoalexceptions/$jobEntry", "id" => "BatchgoalForm" ) ); ?>   
         <h3><u>Enforce Job Status </u></h3>
@@ -164,7 +159,7 @@ $(document).ready(function(){
         </div>
 
         <div class="form-group">
-            <?php echo $this->Form->input("jirapassword", array("label"=> "Jira Password :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Password'] :"", "type" => "password", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
+            <?php echo $this->Form->input("jirapassword", array("label"=> "Jira Password :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Password']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Password'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false)); // "type" => "password",?> 
         </div>
 
         <div class="form-group">
@@ -198,7 +193,7 @@ $(document).ready(function(){
 
         <div>
             <label >Email Body:</label> 
-            <?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?>
+            <div class="edit_emailpreview"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
         </div>
 
       </div>
@@ -240,6 +235,15 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
 	$('#myModal', window.parent.document).modal('hide');
+
+    $('.edit_emailpreview').editable('/batchgoals/editemailpreview', {
+         type      : 'textarea',
+         cancel    : 'Cancel',
+         submit    : 'OK',
+         indicator : 'Saving...',
+         tooltip   : 'Click to edit...'
+    })
+
 });
 </script>
 <?php } ?>
