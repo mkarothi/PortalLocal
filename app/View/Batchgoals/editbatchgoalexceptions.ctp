@@ -142,6 +142,11 @@ $(document).ready(function(){
             <?php echo $this->Form->input("action",array('label'=>'Re_Work:', "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Rework_Type']))? $batchGoalExceptionData['BatchGoalExceptions']['Rework_Type'] :"", 'class'=> 'form-control required', 'options' => array('none' => 'None', 'ignore' => 'Ignore',
                                                         'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
         </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
+        </div>
+
       </div>
       <?php if($batchGoalExceptionData){ ?>
       <div id="menu1" class="tab-pane fade">
@@ -169,6 +174,11 @@ $(document).ready(function(){
         <div class="form-group">
             <?php echo $this->Form->input("jiradescription", array("label"=> "Jira Description :", "value" => (isset($batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']))? $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'] :"", "maxlength" =>"100", "div" =>false, "class"=>"form-control required", "error" => false));?>
         </div>
+
+        <div class="form-group">
+                <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
+        </div>
+
       </div>
       <div id="menu2" class="tab-pane fade">
         <h3>Email Preview</h3>
@@ -195,17 +205,13 @@ $(document).ready(function(){
             <label >Email Body:</label> 
             <div class="edit_emailpreview"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
         </div>
-
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
+        </div>
       </div>
       <?php } ?>
-      <div class="form-group">
-        <button type="submit" class="btn btn-default" id="updateDetails">Enter/Update Details</button>
-        <?php if($batchGoalExceptionData){ ?>
-            <button type="submit" class="btn btn-default" id="raiseJira">Raise Jira Incident Request</button>
-            <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
-        <?php } ?>
+      
         <?php echo $this->Form->end();?>
-      </div>
     </div>
 
 </div>
