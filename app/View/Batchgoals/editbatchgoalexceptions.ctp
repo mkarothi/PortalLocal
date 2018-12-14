@@ -45,12 +45,14 @@
 </head>
 <body>
     
-<?php echo $this->Html->script('jquery/plugins/jquery.validate.js?v=1', array('inline' => true)); ?>
-<?php echo $this->Html->script('jquery/jquery.editable.min.js', array('inline' => true)); ?>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jeditable.js/2.0.6/jquery.jeditable.min.js"></script>
 <script>
 $(document).ready(function(){
 
-	var validator = $("#jobUpdateForm").validate({
+	/* var validator = $("#jobUpdateForm").validate({
         rules: {
             "data[Ops][updated_by]":{
             	required: true,
@@ -77,7 +79,7 @@ $(document).ready(function(){
         submitHandler : function(form){
             form.submit();
         }
-    });
+    }); */
 });
 </script>
 
@@ -203,7 +205,7 @@ $(document).ready(function(){
 
         <div>
             <label >Email Body:</label> 
-            <div class="edit_emailpreview"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
+            <div class="editable_email"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
@@ -227,6 +229,13 @@ $(document).ready(function(){
             $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
             $("#BatchgoalForm").submit();
         });
+
+        $('.editable_email').editable('http://www.example.com/save.php', {
+            type      : 'textarea',
+            cancel    : 'Cancel',
+            submit    : 'OK',
+            tooltip   : 'Click to edit...'
+        });
     <?php }?>
 });
 
@@ -242,14 +251,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#myModal', window.parent.document).modal('hide');
 
-    $('.edit_emailpreview').editable('/batchgoals/editemailpreview', {
-         type      : 'textarea',
-         cancel    : 'Cancel',
-         submit    : 'OK',
-         indicator : 'Saving...',
-         tooltip   : 'Click to edit...'
-    })
-
+    
 });
 </script>
 <?php } ?>
