@@ -142,7 +142,7 @@ $(document).ready(function(){
     <div class="form-group">
 		    <label for="OpsAction">Action:</label> 
 		    <?php echo $this->Form->input("action",array('label'=>false, 'class'=> 'form-control required', 'options' => array('ignore' => 'Ignore',
-                                                    'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice'), 'div'=>false));?>
+                                                    'restart' => 'Restart Job', 'onhold' => 'Put On-Hold', 'onice' => 'Put On-Ice', 'force' => 'Force Success'), 'div'=>false));?>
 	  </div>
 		
 	  <button type="submit" class="btn btn-default">Submit</button>
