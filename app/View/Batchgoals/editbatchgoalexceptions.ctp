@@ -200,12 +200,12 @@ $(document).ready(function(){
 
         <div>
             <label >Subject:</label> 
-            <?php echo $batchGoalScheduleData['BatchGoalSchedule']['Job_ID']; ?> is in < Status > now, and Expected to finish in <?php echo $batchGoalExceptionData['BatchGoalExceptions']['ETA'] ;?>
+            <?php echo $batchGoalScheduleData['BatchGoalSchedule']['Job_ID']; ?> is in < Status > now, and ETAis : <?php echo $batchGoalExceptionData['BatchGoalExceptions']['ETA'] ;?>
         </div>
 
         <div>
             <label >Email Body:</label> 
-            <div class="editable_email" ><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
+            <div class="editable_email"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
@@ -222,20 +222,19 @@ $(document).ready(function(){
 $(document).ready(function(){
     <?php if($batchGoalExceptionData){ ?>
         $('#raiseJira').click( function() {
-            $('#BatchgoalForm').attr('action', '/batchgoals/createJiraTicket/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>');
+            $('#BatchgoalForm').attr('action', '/batchgoals/createJiraTicket/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
+            $("#BatchgoalForm").submit();
+        });
+        $('#emailPreview').click( function() {
+            $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
             $("#BatchgoalForm").submit();
         });
 
-        $('#emailPreview').click( function() {
-            // $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>');
-            // $("#BatchgoalForm").submit();
-        });
-
-        $('.editable_email').editable('/batchgoals/updateEmailCopy/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>', {
+        $('.editable_email').editable('http://www.example.com/save.php', {
             type      : 'textarea',
             cancel    : 'Cancel',
             submit    : 'OK',
-            tooltip   : 'Click to update email copy...'
+            tooltip   : 'Click to edit...'
         });
     <?php }?>
 });
