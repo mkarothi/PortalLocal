@@ -169,7 +169,7 @@ class BatchgoalsController extends AppController {
 				$this->loadModel('BatchGoalSchedule');
 				$batchGoalScheduleData = $this->BatchGoalSchedule->find("first", array("conditions" => array("BatchGoalSchedule.Job_ID" => $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']) ));
 			}
-			$final_message = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description'] ; //"Mr./Mrs.  $username (Phone Number : $phone) has an inquiry about portal for the page : $websiteURL \n \n $message \n"; 
+			$final_message = $batchGoalExceptionData['BatchGoalExceptions']['​Updated_Email_Copy'] ; //"Mr./Mrs.  $username (Phone Number : $phone) has an inquiry about portal for the page : $websiteURL \n \n $message \n"; 
 			$email = $to= 'SatyaMurthy.Karothi@dexmedia.com';
 			$subject = $batchGoalScheduleData['BatchGoalSchedule']['Job_ID'] . "is in < Status > now, and Expected to finish in " . $batchGoalExceptionData['BatchGoalExceptions']['ETA'];
 			$headers =  'CC: ' . $email . "\r\n";
