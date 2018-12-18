@@ -109,6 +109,7 @@ class BatchgoalsController extends AppController {
 			$reworkDetails['Jira_Password'] = $this->data['jirapassword'];
 			$reworkDetails['Jira_Summary'] = $this->data['jirasummary'];
 			$reworkDetails['Jira_Description'] = $this->data['jiradescription'];
+			$reworkDetails['​Updated_Email_Copy'] = $this->data['jiradescription'];
 			$this->BatchGoalExceptions->save($reworkDetails);
 
 			if(!$batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']){
@@ -121,8 +122,8 @@ class BatchgoalsController extends AppController {
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Basic '.$base64_usrpwd)); 
-				// curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-				// curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
 				
 				$arr['project'] = array( 'key' => 'DexYP Incident/Service (DEXYP)');
 				$arr['summary'] = $batchGoalExceptionData['BatchGoalExceptions']['Jira_Summary'];
@@ -149,17 +150,17 @@ class BatchgoalsController extends AppController {
 					$this->log("goalExceptionId: " . $exceptionId);
 					$this->log($curlResult);
 					$this->BatchGoalExceptions->save($curlResult);
-					$this->Session->setFlash("Ticket created succesfully");
+					$this->Session->setFlash("Ticket created succesfully.");
 				}
 			}else{
-				$this->Session->setFlash("ticket already submitted - " . $batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']);
+				$this->Session->setFlash("Ticket already submitted - " . $batchGoalExceptionData['BatchGoalExceptions']['Jira_RequestID']);
 			}
 		}
 		$this->redirect("/batchgoals/editbatchgoalexceptions/". $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']);
 
 	}
 
-	function emailPreview($exceptionId){
+	function emailPreview($exceptionId) {
 		$this->autoRender = false;
 		$this->loadModel('BatchGoalExceptions');
 		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $exceptionId)) );
@@ -184,6 +185,21 @@ class BatchgoalsController extends AppController {
 			}
 		}
 		$this->redirect("/batchgoals/editbatchgoalexceptions/". $batchGoalExceptionData['BatchGoalExceptions']['Job_Entry']);
+	}
+
+	function updateEmailCopy($exceptionId) {
+		$this->autoRender = false;
+		$this->loadModel('BatchGoalExceptions');
+		$batchGoalExceptionData = $this->BatchGoalExceptions->find('first', array("conditions" => array('BatchGoalExceptions.id' => $exceptionId)) );
+		if(!empty($this->data)){
+			if($batchGoalExceptionData){
+				$this->BatchGoalExceptions->id = $exceptionId;
+				$updatedCopy['​Updated_Email_Copy'] = $this->data['value'];
+				if($this->BatchGoalExceptions->save($updatedCopy)){
+					echo $this->data['value'];
+				}
+			}
+		}
 	}
 	
   

@@ -205,7 +205,7 @@ $(document).ready(function(){
 
         <div>
             <label >Email Body:</label> 
-            <div class="editable_email"><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
+            <div class="editable_email" ><?php echo $batchGoalExceptionData['BatchGoalExceptions']['Jira_Description']; ?></div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default" id="emailPreview">Email Preview/Send</button>
@@ -222,19 +222,20 @@ $(document).ready(function(){
 $(document).ready(function(){
     <?php if($batchGoalExceptionData){ ?>
         $('#raiseJira').click( function() {
-            $('#BatchgoalForm').attr('action', '/batchgoals/createJiraTicket/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
-            $("#BatchgoalForm").submit();
-        });
-        $('#emailPreview').click( function() {
-            $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id']?>');
+            $('#BatchgoalForm').attr('action', '/batchgoals/createJiraTicket/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>');
             $("#BatchgoalForm").submit();
         });
 
-        $('.editable_email').editable('http://www.example.com/save.php', {
+        $('#emailPreview').click( function() {
+            // $('#BatchgoalForm').attr('action', '/batchgoals/emailPreview/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>');
+            // $("#BatchgoalForm").submit();
+        });
+
+        $('.editable_email').editable('/batchgoals/updateEmailCopy/<?php echo $batchGoalExceptionData['BatchGoalExceptions']['id'];?>', {
             type      : 'textarea',
             cancel    : 'Cancel',
             submit    : 'OK',
-            tooltip   : 'Click to edit...'
+            tooltip   : 'Click to update email copy...'
         });
     <?php }?>
 });
