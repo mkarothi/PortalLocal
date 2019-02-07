@@ -66,22 +66,22 @@
 	<br>
 	<br>
 	<div class="col-sm-12">
-	<?php if($batchGoalResultData){ ?>
+	<?php if($hostLicensesData){ ?>
 	  	<table class="table table-condensed table-responsive table-bordered">
 		 <thead><tr> 		
-		<?php foreach($batchGoalResultData[0]['BatchGoalStatusData'] as $columnName => $value){ ?>
+		<?php foreach($hostLicensesData[0]['HostLicensesDatas'] as $columnName => $value){ ?>
 	  		<th><?php echo $columnName;?></th>
 	  	<?php } ?>
 	  	</tr></thead>
 	  	<tbody id="myTable">
 	  	<?php foreach($batchGoalResultData as $batchGoalResult){ ?>
 	  		<tr>
-		  	<?php foreach($batchGoalResult['BatchGoalStatusData'] as $columnName => $value){ ?>
+		  	<?php foreach($batchGoalResult['HostLicensesDatas'] as $columnName => $value){ ?>
 		  		
 		  		<?php if($columnName == 'Job_Entry'){ ?>
 		  			<td>
-		  				<?php if($batchGoalResult['BatchGoalStatusData']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
-            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/batchgoals/editbatchgoalexceptions/<?php echo $batchGoalResult['BatchGoalStatusData']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
+		  				<?php if($batchGoalResult['HostLicensesDatas']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
+            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/batchgoals/editbatchgoalexceptions/<?php echo $batchGoalResult['HostLicensesDatask']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
 	  					<?php }else{ ?> 	
 		  					<?php echo $value;?>
 		  				<?php } ?>

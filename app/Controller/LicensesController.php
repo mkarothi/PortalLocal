@@ -10,19 +10,15 @@ class LicensesController extends AppController {
 	}
 	
 	function tqcheck(){
-		$this->loadModel('HostLicensesData');
+		$this->loadModel('HostLicensesDatas');
 		
 		$conditions = array();
 		
-		if(isset($_POST['days']) && $_POST['days'] == 7){
-			// $conditions = array('HostLicensesData.Latest_Check_Time > DATE_SUB(NOW(), INTERVAL 7 DAY) ' );
-		}
-		
-		$batchGoalResultData = $this->HostLicensesData->find('all', array("conditions" => $conditions) );
+		$hostLicensesData = $this->HostLicensesDatas->find('all', array("conditions" => $conditions) );
 
-		$this->set('batchGoalResultData',  $batchGoalResultData);
+		$this->set('hostLicensesData',  $hostLicensesData);
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
-			$this->exportsheet($batchGoalResultData, 'BatchGoalSchedule');
+			$this->exportsheet($hostLicensesData, 'HostLicensesDatas');
 		}
 	}
 
