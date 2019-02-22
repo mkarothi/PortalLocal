@@ -47,65 +47,54 @@
 
 <div class="col-sm-11 text-left"> 
 	<div class="col-sm-10 text-left"><?php echo $this->Session->flash(); ?></div><br>
-	<div class="col-sm-6">
+	<!-- <div class="col-sm-6">
 		<input class="form-control" id="myInput" type="text" placeholder="Search...">
-	</div>
-	<div class="col-sm-1 pull-right">
-		<form method="POST">
-			<input name="export" type="hidden" value="export">
-			<input class="form-control" type="submit" value="Export">
-		</form>
-	</div>
-	<div class="col-sm-1 pull-right">
-		<form method="POST">
-			<input name="export" type="hidden" value="export">
-			<input name="days" type="hidden" value="7">
-			<input class="form-control" type="submit" value="Export 1 Week">
-		</form>
-	</div>
-	<br>
-	<br>
-	<div class="col-sm-12">
-	<?php if($hostLicensesData){ ?>
-	  	<table class="table table-condensed table-responsive table-bordered">
-		 <thead><tr> 		
-		<?php foreach($hostLicensesData[0]['HostLicensesDatas'] as $columnName => $value){ ?>
-	  		<th><?php echo $columnName;?></th>
-	  	<?php } ?>
-	  	</tr></thead>
-	  	<tbody id="myTable">
-	  	<?php foreach($batchGoalResultData as $batchGoalResult){ ?>
-	  		<tr>
-		  	<?php foreach($batchGoalResult['HostLicensesDatas'] as $columnName => $value){ ?>
-		  		
-		  		<?php if($columnName == 'Job_Entry'){ ?>
-		  			<td>
-		  				<?php if($batchGoalResult['HostLicensesDatas']['Job_Actual_End_Time'] == 'xx:xx') { ?> 
-            				<a class="bmd-modalButton" data-toggle="modal" data-bmdSrc="/batchgoals/editbatchgoalexceptions/<?php echo $batchGoalResult['HostLicensesDatask']['Job_Entry'] ?>" data-bmdWidth="640" data-bmdHeight="480" data-target="#myModal"><?php echo $value;?></a>
-	  					<?php }else{ ?> 	
-		  					<?php echo $value;?>
-		  				<?php } ?>
-		  			</td>
-		  		<?php } elseif($columnName != 'Job_Latest_Status'){ ?>
-	  				<td><?php echo $value;?></td>
-		  		<?php } else { ?>
-		  			<?php if(in_array($value, array('Success', 'Ignore', 'ignore') ) ){
-		  					$tdClass = 'background-color: #20dc20;';
-		  				  }elseif($value == 'Long Running'){
-		  					$tdClass = 'background-color: yellow;';
-						  }else {
-		  					$tdClass = 'background-color: red;';
-		  				  }
-	  				?>
-		  			<td style="<?php echo $tdClass;?>"><?php echo $value;?></td>
-		  		<?php } ?>
-		  	<?php } ?>
-		  	</tr>
-	  	<?php } ?>
-	  	</tbody>
-	  </table>
-	  <?php } ?>
-	  </div>
+	</div> -->
+<div class="nav">
+		<ul id="menu">
+				<?php $iterator = 1;?>
+				<?php foreach($searchTablesArray as $tableName) { ?>
+						<li <?php if($iterator == "1"){ echo "class='selected'";} ?>><a id="link-<?php echo $iterator;  ?>" href="#"><?php echo str_replace("Stat", "", str_replace("Storage", "", $tableName))?></a></li>
+						<?php $iterator++;?>
+				<?php } ?>
+		</ul>
+</div>
+
+
+<div class="main">
+<?php $iterator = 1;?>
+<?php $hasResults = false;?>
+<?php 
+foreach($searchTablesArray as $tableName) { ?>
+   
+		<?php 
+		if(isset($results[$tableName]) && $results[$tableName]){ ?> 
+        <?php $hasResults = true;?>
+        <div class="results results-<?php echo $iterator; ?>">
+            
+            
+        <table class="tbl_border_gry table table-condensed table-responsive table-bordered">
+            <tr>
+                <?php foreach($results[$tableName][0][$tableName] as $fieldNames => $values){ ?> 
+                        <th><?php echo ($fieldNames); ?></th>   
+                <?php } ?>
+            </tr>
+            <?php foreach($results[$tableName] as $result){ ?>
+                <tr>
+                    <?php foreach($result[$tableName] as $values){ ?>
+	                    	<td><?php echo ($values); ?></td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
+        </table>
+        </div>
+    <?php }else{ ?>
+    <?php echo "<div class='results results-".$iterator."'>No results found from " . $tableName . "</div>";
+    } ?>
+<?php 
+$iterator++;
+} ?>
+  </div>
 </div>
 
 <div class="modal fade" id="myModal">
@@ -146,5 +135,16 @@ $(document).ready(function(){
     $('#myModal').modal('hide');
   };
   
+	$('#menu a').click(function(e){
+			e.preventDefault();
+			$('#menu a').parent().removeClass("selected")
+			$(this).parent().addClass("selected")
+			var i = $(this).attr("id").split("-")[1];
+			$(".results").hide();
+			$(".results-"+i).show();
+	});
+	$(".results").hide();
+	$(".results-1").show();
+
 });
 </script>

@@ -9,25 +9,29 @@ class LicensesController extends AppController {
 		$this->layout = "licenses";
 	}
 	
-	function tqcheck(){
+	function tqcheck($type = 'history'){
+
 		$this->loadModel('HostLicensesDatas');
+
+		$this->loadModel('HostLicensesHistoryDatas');
 		
 		$conditions = array();
+
+		$searchTablesArray = array('HostLicensesDatas', 'HostLicensesHistoryDatas');
 		
-		$hostLicensesData = $this->HostLicensesDatas->find('all', array("conditions" => $conditions) );
+		$results['HostLicensesDatas'] = $this->HostLicensesDatas->find('all', array("conditions" => $conditions) );
+		$results['HostLicensesHistoryDatas'] = $this->HostLicensesHistoryDatas->find('all', array("conditions" => $conditions) );
 
-		$this->set('hostLicensesData',  $hostLicensesData);
 		if(isset($_POST['export']) && $_POST['export'] == 'export'){
-			$this->exportsheet($hostLicensesData, 'HostLicensesDatas');
+			if($type == 'history'){
+				$this->exportsheet($results['HostLicensesHistoryDatas'], 'HostLicensesHistoryDatas');
+			}else{
+				$this->exportsheet($results['HostLicensesDatas'], 'HostLicensesDatas');
+			}
 		}
-	}
-
-	function counthistory(){
-
-	}
-
-	
-	
+		$this->set('results', $results);
+		$this->set('searchTablesArray', $searchTablesArray);
+	}	
   
 }
 
