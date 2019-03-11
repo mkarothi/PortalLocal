@@ -46,6 +46,7 @@
 <?php $iterator = 1;?>
 <?php $hasResults = false;?>
 <?php 
+$resultFoundArray = array();
 foreach($searchTablesArray as $tableName) { ?>
    
     <?php if(isset($results[$tableName]) && $results[$tableName]){ ?> 
@@ -98,8 +99,13 @@ foreach($searchTablesArray as $tableName) { ?>
             </tr>
             <?php foreach($results[$tableName] as $result){ ?>
                 <tr>
-                    <?php foreach($result[$tableName] as $values){ ?>
+                    <?php foreach($result[$tableName] as $key => $values){ ?>
 	                    	<td><?php echo ($values); ?></td>
+                            <?php if(in_array($reportType, array("bulktqhost", "tqhost"))){ 
+                                if('Server_Name' == $key){
+                                    $resultFoundArray[] = $values;
+                                }
+                            } ?>
                     <?php } ?>
                     <?php foreach($result[0] as $values){ ?>
 	                    	<td><?php echo ($values); ?></td>
@@ -108,6 +114,16 @@ foreach($searchTablesArray as $tableName) { ?>
             <?php } ?>
         </table>
         </div>
+        
+        <?php if($resultFoundArray) { 
+                $notFoundServersArray = array_diff($searchArray, $resultFoundArray);
+                if($notFoundServersArray){
+                ?>
+                <div> <?php echo implode(", ", $notFoundServersArray); ?> </div>
+                
+            <?php }
+          } ?>
+
     <?php }elseif($fromSearch){ ?>
     <?php echo "<div class='results results-".$iterator."'>No results found from " . $tableName . "</div>";
     } ?>

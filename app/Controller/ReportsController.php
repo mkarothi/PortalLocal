@@ -114,6 +114,7 @@ class ReportsController extends AppController {
         $searchTypes = array();
         $frameName  =   "";
         $deviceid   =   "";
+        $searchArray = array();
         $this->set("framename", $frameName);
         $this->set("deviceid", $deviceid);
         // debug($reportType);
@@ -943,6 +944,7 @@ class ReportsController extends AppController {
         $this->set("results", $results);
         $this->set("searchTypes", $searchTypes);
         $this->set("searchString", $searchString);
+        $this->set("searchArray", $searchArray);
         $this->set("searchName", $searchName);
         $this->set("framename", $frameName);
         $this->set("deviceid", $deviceid);
