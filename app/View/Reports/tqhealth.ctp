@@ -119,7 +119,9 @@ foreach($searchTablesArray as $tableName) { ?>
                 $notFoundServersArray = array_diff($searchArray, $resultFoundArray);
                 if($notFoundServersArray){
                 ?>
-                <div> <?php echo implode(", ", $notFoundServersArray); ?> </div>
+                <div> 
+                    <?php echo implode("<br />", $notFoundServersArray); ?>
+                </div>
                 
             <?php }
           } ?>
