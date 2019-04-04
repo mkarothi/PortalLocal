@@ -47,7 +47,9 @@
 <?php $hasResults = false;?>
 <?php 
 $resultFoundArray = array();
-foreach($searchTablesArray as $tableName) { ?>
+foreach($searchTablesArray as $tableName) { 
+    $resultFoundArray = array();
+    ?>
    
     <?php if(isset($results[$tableName]) && $results[$tableName]){ ?> 
         <?php $hasResults = true;?>
