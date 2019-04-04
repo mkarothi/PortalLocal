@@ -53,79 +53,79 @@ foreach($searchTablesArray as $tableName) { ?>
         <?php $hasResults = true;?>
         <div class="results results-<?php echo $iterator; ?>">
             
-        <table >
-            <tr>
-                <td><?php 
-            echo $this->Form->create("Reports", array("method" => "POST", "action" => "/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
-            if(in_array($reportType, array("bulkframe"))){
-                echo $this->Form->hidden('framename', array("value" => $framename));
-                echo $this->Form->hidden('bulkdeviceid', array("value" => $searchString)); 
-            }elseif(in_array($reportType, array("frame"))){
-                echo $this->Form->hidden('framename', array("value" => $framename));
-                echo $this->Form->hidden('deviceid', array("value" => $searchString)); 
-            }elseif(in_array($reportType, array("bulktqhost", "tqhost"))){
-                echo $this->Form->hidden('tqhost', array("value" => $searchString));
-            }elseif(in_array($reportType, array("bulkwwn", "wwn"))){
-                echo $this->Form->hidden('wwn', array("value" => $searchString));
-            }
-            echo $this->Form->hidden('export', array("value" => "export")); 
-            echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
-            echo $this->Form->end() ;
-        ?></td>
-            <td style="text-align: center;"><h2><?php echo strtoupper($tableName) ?> search results:</h2></td>
-            </tr>
-        </table>
-            
-        <table class="tbl_border_gry" border="0" width="100%" cellpadding="1" cellspacing="0" align="left">
-            <tr>
-                <?php foreach($results[$tableName][0][$tableName] as $fieldNames => $values){ ?> 
-                    <?php if($fieldNames == "Location"){ ?>
-                        <th style="width:100px;"><?php echo ($fieldNames); ?></th>
-                    <?php }elseif(isset($fieldNames[0]) && is_array($fieldNames[0])){ ?>
-   							<?php foreach($fieldNames[0] as $innerFieldNames => $innerFieldvalues){  ?>       
-	                    	<th><?php echo ($innerFieldNames); ?> </th>
-	                    	<?php } ?>
-                    <?php }else{ ?>
-                        <th><?php echo ($fieldNames); ?></th>   
-                    <?php } ?>
-                <?php } ?>
-                <?php foreach($results[$tableName][0][0] as $fieldNames => $values){ ?> 
-				<?php if($fieldNames == "Location"){ ?>
-						<th style="width:100px;"><?php echo ($fieldNames); ?> </th>
-						<?php }else{ ?>
-								<th><?php echo ($fieldNames); ?></th>   
-						<?php } ?>
-				<?php } ?>
-            </tr>
-            <?php foreach($results[$tableName] as $result){ ?>
+            <table >
                 <tr>
-                    <?php foreach($result[$tableName] as $key => $values){ ?>
-	                    	<td><?php echo ($values); ?></td>
-                            <?php if(in_array($reportType, array("bulktqhost", "tqhost"))){ 
-                                if('Server_Name' == $key){
-                                    $resultFoundArray[] = $values;
-                                }
-                            } ?>
+                    <td><?php 
+                        echo $this->Form->create("Reports", array("method" => "POST", "action" => "/". $searchTypes[$tableName]. "/". $this->request->params['action'] ."/$reportType", "class" => "reports-form-tag") );
+                        if(in_array($reportType, array("bulkframe"))){
+                            echo $this->Form->hidden('framename', array("value" => $framename));
+                            echo $this->Form->hidden('bulkdeviceid', array("value" => $searchString)); 
+                        }elseif(in_array($reportType, array("frame"))){
+                            echo $this->Form->hidden('framename', array("value" => $framename));
+                            echo $this->Form->hidden('deviceid', array("value" => $searchString)); 
+                        }elseif(in_array($reportType, array("bulktqhost", "tqhost"))){
+                            echo $this->Form->hidden('tqhost', array("value" => $searchString));
+                        }elseif(in_array($reportType, array("bulkwwn", "wwn"))){
+                            echo $this->Form->hidden('wwn', array("value" => $searchString));
+                        }
+                        echo $this->Form->hidden('export', array("value" => "export")); 
+                        echo $this->Form->input('button', array('type'=>'image', "src"=>"/images/Export_Button.png", 'label'=> false));
+                        echo $this->Form->end() ;
+            ?></td>
+                <td style="text-align: center;"><h2><?php echo strtoupper($tableName) ?> search results:</h2></td>
+                </tr>
+            </table>
+            
+            <table class="tbl_border_gry" border="0" width="100%" cellpadding="1" cellspacing="0" align="left">
+                <tr>
+                    <?php foreach($results[$tableName][0][$tableName] as $fieldNames => $values){ ?> 
+                        <?php if($fieldNames == "Location"){ ?>
+                            <th style="width:100px;"><?php echo ($fieldNames); ?></th>
+                        <?php }elseif(isset($fieldNames[0]) && is_array($fieldNames[0])){ ?>
+                                <?php foreach($fieldNames[0] as $innerFieldNames => $innerFieldvalues){  ?>       
+                                <th><?php echo ($innerFieldNames); ?> </th>
+                                <?php } ?>
+                        <?php }else{ ?>
+                            <th><?php echo ($fieldNames); ?></th>   
+                        <?php } ?>
                     <?php } ?>
-                    <?php foreach($result[0] as $values){ ?>
-	                    	<td><?php echo ($values); ?></td>
+                    <?php foreach($results[$tableName][0][0] as $fieldNames => $values){ ?> 
+                    <?php if($fieldNames == "Location"){ ?>
+                            <th style="width:100px;"><?php echo ($fieldNames); ?> </th>
+                            <?php }else{ ?>
+                                    <th><?php echo ($fieldNames); ?></th>   
+                            <?php } ?>
                     <?php } ?>
                 </tr>
-            <?php } ?>
-        </table>
+                <?php foreach($results[$tableName] as $result){ ?>
+                    <tr>
+                        <?php foreach($result[$tableName] as $key => $values){ ?>
+                                <td><?php echo ($values); ?></td>
+                                <?php if(in_array($reportType, array("bulktqhost", "tqhost"))){ 
+                                    if('Server_Name' == $key){
+                                        $resultFoundArray[] = $values;
+                                    }
+                                } ?>
+                        <?php } ?>
+                        <?php foreach($result[0] as $values){ ?>
+                                <td><?php echo ($values); ?></td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+            </table>
+            <?php if($resultFoundArray) { 
+                    $notFoundServersArray = array_diff($searchArray, $resultFoundArray);
+                    if($notFoundServersArray){
+                    ?>
+                    <br>
+                    <div> 
+                        <span> No Matching Servers:</span><br>
+                        <?php echo implode("<br />", $notFoundServersArray); ?>
+                    </div>
+                    
+                <?php }
+            } ?>
         </div>
-        
-        <?php if($resultFoundArray) { 
-                $notFoundServersArray = array_diff($searchArray, $resultFoundArray);
-                if($notFoundServersArray){
-                ?>
-                <div> 
-                    <?php echo implode("<br />", $notFoundServersArray); ?>
-                </div>
-                
-            <?php }
-          } ?>
-
     <?php }elseif($fromSearch){ ?>
     <?php echo "<div class='results results-".$iterator."'>No results found from " . $tableName . "</div>";
     } ?>
