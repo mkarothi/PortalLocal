@@ -48,11 +48,11 @@
 <?php 
 $resultFoundArray = array();
 foreach($searchTablesArray as $tableName) { 
-    $resultFoundArray = array();
+    $resultFoundArray[$tableName] = array();
     ?>
    
     <?php if(isset($results[$tableName]) && $results[$tableName]){ ?> 
-        <?php $hasResults = true;?>
+        <?php $hasResults = true; ?>
         <div class="results results-<?php echo $iterator; ?>">
             
             <table >
@@ -105,7 +105,7 @@ foreach($searchTablesArray as $tableName) {
                                 <td><?php echo ($values); ?></td>
                                 <?php if(in_array($reportType, array("bulktqhost", "tqhost"))){ 
                                     if('Server_Name' == $key){
-                                        $resultFoundArray[] = $values;
+                                        $resultFoundArray[$tableName][] = $values;
                                     }
                                 } ?>
                         <?php } ?>
@@ -115,8 +115,8 @@ foreach($searchTablesArray as $tableName) {
                     </tr>
                 <?php } ?>
             </table>
-            <?php if($resultFoundArray) { 
-                    $notFoundServersArray = array_diff($searchArray, $resultFoundArray);
+            <?php if($resultFoundArray[$tableName]) { 
+                    $notFoundServersArray = array_diff($searchArray, $resultFoundArray[$tableName]);
                     if($notFoundServersArray){
                     ?>
                     <br>
@@ -129,11 +129,18 @@ foreach($searchTablesArray as $tableName) {
             } ?>
         </div>
     <?php }elseif($fromSearch){ ?>
-    <?php echo "<div class='results results-".$iterator."'>No results found from " . $tableName . "</div>";
+        <?php echo "<div class='results results-".$iterator."'>No results found from " . $tableName . "</div>"; ?>
+
+        <br>
+        <div> 
+            <span>No Matching Servers List:</span><br>
+            <?php echo implode("<br />", $searchArray); ?>
+        </div>
+    <?php } ?>
+
+    <?php 
+    $iterator++;
     } ?>
-<?php 
-$iterator++;
-} ?>
   </div>
 </div>
 <script>
