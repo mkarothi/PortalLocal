@@ -7,6 +7,8 @@ class LicensesController extends AppController {
 	var $helpers    = array('Session');
 	function beforeFilter(){
 		$this->layout = "licenses";
+
+		$this->__requireLogin();
 	}
 	
 	function tqcheck($type = 'history'){

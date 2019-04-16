@@ -7,6 +7,9 @@ class SmartsController extends AppController {
     
     function beforeFilter() {
         parent::beforeFilter();
+
+        $this->__requireLogin();
+        
         $this->layout = "smarts";
     }
     

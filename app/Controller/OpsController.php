@@ -7,6 +7,8 @@ class OpsController extends AppController {
 	
 	function beforeFilter(){
 		$this->layout = "ops";
+
+		$this->__requireLogin();
 	}
 	
 	function index(){

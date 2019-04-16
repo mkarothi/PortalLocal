@@ -73,4 +73,70 @@ class AppController extends Controller {
         }
     }
 
+    function __requireLogin() {
+    	if($this->__checkIfUserLoggedIn()) {
+    		//leave him
+            $user = $this->Session->read('Auth');
+    	} else {
+            if(isset($_SERVER['REQUEST_URI'])){
+                $referer = $_SERVER['REQUEST_URI'];
+            } else {
+                $referer = $this->here;
+            }
+            $this->Session->write("Login.referer", $referer);
+    		$this->redirect("/login");
+    	}
+    }
+
+    function __checkIfUserLoggedIn() {
+    	$isLoggedIn = false;
+    	if($this->__getCurrentUserId()) {
+    		$isLoggedIn = true;
+    	}
+    	return $isLoggedIn;
+    }
+
+    /**
+     * Returns false if not logged in and returns the Id form Auth Session
+     */
+
+    function __getCurrentUserId() {
+    	$userId = false;
+    	if($this->Session->check('Auth')) {
+	        $user = $this->Session->read('Auth');
+	        if(isset($user['User'])) {
+	            $userId = $user['User']['id'];
+	        } 
+    	} 
+        return $userId;
+    }
+
+    function __getLoginReferer() {
+        $referer = "/";
+        if($this->Session->check("Login.referer")) {
+            $referer = $this->Session->read("Login.referer");
+            $this->Session->delete("Login.referer");
+        }
+        return $referer;
+    }
+
+    function __createUserSession($userData) {
+    	$this->Session->write("Auth", $userData);
+    	if (!$this->Session->check("Auth")) {
+            $this->log("AppController::__createUserSession - unable to write to session - " . serialize($userData));
+            $this->Session->setFlash('oops something bad happened!');
+            $this->redirect("/");
+            return;
+    	} else {
+    	    $this->log($this->Session->read("Auth"));
+    	}
+    }
+
+    function __deleteUserSession() {
+        $this->Session->delete("Auth");
+        $this->Cookie->name = 'platformd';
+        $this->Cookie->domain = 'votigo.com';
+        $this->Cookie->destroy();
+    }
+
 }

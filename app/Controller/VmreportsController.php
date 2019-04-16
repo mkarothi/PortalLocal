@@ -4,9 +4,11 @@ class VmreportsController extends AppController {
     
     function beforeFilter() {
         parent::beforeFilter();
+
+        $this->__requireLogin();
+        
         Configure::write('debug', 0);
         ini_set('memory_limit', '2048M');
-        $this->layout = "vmreport";
         $this->layout = "vmreport";
     }
 	

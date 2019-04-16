@@ -45,7 +45,9 @@
     
     Router::connect("/smarts/:reportName/:action/*", array('controller' => 'smarts'), array("pass" => array("reportName"), "reportName" => '[0-9a-zA-Z\-]+') );
     
-
+    Router::connect('/register', array('controller' => 'users', 'action' => 'add'));
+    Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
+    Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

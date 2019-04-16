@@ -7,6 +7,7 @@ class BatchgoalsController extends AppController {
 	var $helpers    = array('Session');
 	function beforeFilter(){
 		$this->layout = "batchgoals";
+		$this->__requireLogin();
 	}
 	
 	function index(){

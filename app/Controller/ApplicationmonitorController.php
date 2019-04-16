@@ -6,7 +6,9 @@ class ApplicationmonitorController extends AppController {
 
 	function beforeFilter(){
 		$this->layout = "applicationmonitor";
+		$this->__requireLogin();
 		Configure::write('debug', 2);
+
 	}
 	
 	function index(){
