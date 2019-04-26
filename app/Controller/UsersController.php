@@ -1,11 +1,11 @@
 <?php
 App::uses('AppController', 'Controller');
-class CoversController extends AppController {
+class UsersController extends AppController {
     
     function beforeFilter() {
         parent::beforeFilter();
         Configure::write('debug', 2);
-        $this->layout = "default";
+        $this->layout = "user";
     }
     
     function index(){
@@ -33,7 +33,7 @@ class CoversController extends AppController {
     }
 
     function login() {
-    	
+    	debug($_REQUEST);
         if($this->__checkIfUserLoggedIn()) {
             //user already logged in
             $referer = $this->__getLoginReferer();
@@ -41,26 +41,30 @@ class CoversController extends AppController {
             
         } else {
             if(!empty($this->data)) {
-                    $bodyData   = array('email' => $this->data["User"]["email"], 'password' => $this->data["User"]["pswd"], 'signature' => $signature, 'role' => $role);
-	                    $this->log("Users::login - Success --------");
-						
-                        $this->__createUserSession($resultsCode);
+                $userData   = array('email' => $this->data["email"], 'password' => MD5($this->data["password"]) );
+            
+                debug($userData);
 
-                        $referer = $this->__getLoginReferer();
-						
-						/* adding this to redirect to http:// version of admin tool
-						 * we are forcing https on login/register but inside site should
-						 * still run on http://
-						 */
-						$redirectUrl =  'http://' . env('SERVER_NAME') . $referer;
-						
-                        $this->redirect($redirectUrl);
-                    }
-                } 
-            } 
-        }
+                $this->loadModel('User');
 
-    }
+                $userLoggedData = $this->User->find('first', array("conditions" => $userData) );
+
+                $this->log("Users::login - Success --------");
+                
+                $this->__createUserSession($userLoggedData);
+
+                $referer = $this->__getLoginReferer();
+                
+                /* adding this to redirect to http:// version of admin tool
+                    * we are forcing https on login/register but inside site should
+                    * still run on http://
+                    */
+                $redirectUrl =  'http://' . env('SERVER_NAME') . $referer;
+                
+                $this->redirect($redirectUrl);
+            }
+        } 
+    } 
 
     function logout() {
         
