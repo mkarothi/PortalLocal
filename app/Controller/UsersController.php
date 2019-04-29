@@ -2,9 +2,11 @@
 App::uses('AppController', 'Controller');
 class UsersController extends AppController {
     
+    var $helpers    = array('Session');
+
     function beforeFilter() {
         parent::beforeFilter();
-        Configure::write('debug', 2);
+        Configure::write('debug', 0);
         $this->layout = "user";
     }
     
@@ -33,7 +35,7 @@ class UsersController extends AppController {
     }
 
     function login() {
-    	debug($_REQUEST);
+        
         if($this->__checkIfUserLoggedIn()) {
             //user already logged in
             $referer = $this->__getLoginReferer();
@@ -41,27 +43,25 @@ class UsersController extends AppController {
             
         } else {
             if(!empty($this->data)) {
-                $userData   = array('email' => $this->data["email"], 'password' => MD5($this->data["password"]) );
+                $userData   = array('email' => trim($this->data["email"]), 'password' => md5(trim($this->data["password"])) );
             
-                debug($userData);
-
                 $this->loadModel('User');
-
                 $userLoggedData = $this->User->find('first', array("conditions" => $userData) );
+                if($userLoggedData){
 
-                $this->log("Users::login - Success --------");
-                
-                $this->__createUserSession($userLoggedData);
-
-                $referer = $this->__getLoginReferer();
-                
-                /* adding this to redirect to http:// version of admin tool
+                    $this->log("Users::login - Success --------");
+                    $this->__createUserSession($userLoggedData);
+                    $referer = $this->__getLoginReferer();
+                    
+                    /* adding this to redirect to http:// version of admin tool
                     * we are forcing https on login/register but inside site should
                     * still run on http://
                     */
-                $redirectUrl =  'http://' . env('SERVER_NAME') . $referer;
-                
-                $this->redirect($redirectUrl);
+                    $redirectUrl =  'http://' . env('SERVER_NAME') . $referer;
+                    $this->redirect($redirectUrl);
+                }else{
+                    $this->Session->setFlash('Email and Password does not match!');
+                }
             }
         } 
     } 
@@ -70,18 +70,13 @@ class UsersController extends AppController {
         
         $this->autoRender = false;
         if($this->__checkIfUserLoggedIn()) {
-            $signature = $this->getAuthenticatedSignature();
-            if ($signature) {
-                $userId      = $this->__getCurrentUserId();
-                    // debug("TODO: What to do if the logout failed. I think still we need to delete the session locally?");
-                $this->__deleteUserSession();
-            } else {
-                //no signature
-                $this->log("Users::logout - No Signature");
-                debug("no signature");
-            }
+            $userId      = $this->__getCurrentUserId();
+            // debug("TODO: What to do if the logout failed. I think still we need to delete the session locally?");
+            $this->__deleteUserSession();
+            $redirectUrl = "http://".$_SERVER['SERVER_NAME']."/login";
+        }else{
+            $redirectUrl =  'http://' . env('SERVER_NAME') . $referer;
         }
-        $redirectUrl = "http://".$_SERVER['SERVER_NAME']."/login";
         $this->redirect($redirectUrl);
     }
 }

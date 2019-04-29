@@ -22,5 +22,6 @@
             <?php echo $this->fetch('content'); ?>
         </main>
     </div>
+    <?php echo $this->element('sql_dump'); ?>
 </body>
 </html>

@@ -26,9 +26,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
+                                <input name="" id="" class="btn btn-primary" type="submit" value="Login">
                                 <a class="btn btn-link" href="#">
                                     Forgot Your Password?
                                 </a>
