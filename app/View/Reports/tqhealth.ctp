@@ -116,7 +116,7 @@ foreach($searchTablesArray as $tableName) {
                 <?php } ?>
             </table>
             <?php if($resultFoundArray[$tableName]) { 
-                    $notFoundServersArray = array_diff($searchArray, $resultFoundArray[$tableName]);
+                    $notFoundServersArray = array_udiff($searchArray, $resultFoundArray[$tableName]);
                     if($notFoundServersArray){
                     ?>
                     <br>
